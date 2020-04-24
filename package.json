@@ -1,0 +1,21 @@
+{
+  "name": "node-template",
+  "version": "1.0.0",
+  "author": "loic-roux <69loloro10@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "esm": "^3.2.25",
+    "express": "^4.17.1",
+    "nodemon": "^2.0.3",
+    "pug": "^2.0.4"
+  },
+  "esm":{
+    "cjs": true,
+    "wasm": true
+  },
+  "scripts": {
+    "node-dev": "make dev",
+    "node-prod": "NODE_ENV=production node"
+  }
+}
