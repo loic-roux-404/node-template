@@ -1,7 +1,5 @@
+// Generate menu from router object
 ul
-    each link in app._router.stack.slice(2, app._router.stack.length)
+    each link in pages
         li
-            - let str = new String(link.route.path.match(/((\w|)*[A-z])/g) || 'home') 
-            - str = str.replace(',', ' ')
-            - str = str.charAt(0).toUpperCase() + str.substring(1);
-            a(href=link.route.path)= str
+            a(href=link.href)= link.title

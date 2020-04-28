@@ -16,7 +16,7 @@ PROD_I:= --save-prod
 endif
 
 # deploy
-REMOTE_DIR_DEPLOY=/var/www
+REMOTE_DIR_DEPLOY:=/var/www
 
 # func to generate inline args from file
 line=$(shell cat $(1) | while read line; do echo -n "$$line "; done)
@@ -27,7 +27,7 @@ APP?=$(NODE_PATH)/app.js
 NODE_MODULES=node_modules
 prod-exe?=node
 EXTS:= .pug,.ts,.vue,.js
-dev-exe?=./$(NODE_MODULES)/nodemon/bin/nodemon.js -e $(EXTS)
+dev-exe?=nodemon -e $(EXTS)
 
 .DEFAULT_GOAL := help
 .PHONY: $(NODE_ENVS)
@@ -40,9 +40,9 @@ help:
 	@echo "Available environments: $(ENVS)"
 	@$(MAKE) help_more || true
 
+# run node js server
 %.run:
 	@echo [ === Building $* environments === ]
-	@echo [ === check url chrome://inspect/#devices === ]
 	$(eval ENVS=$(call line, $*.env))
 	NODE_PATH=$(NODE_PATH) $(ENVS) \
 	  $($*-exe) $(OPTIONS) \

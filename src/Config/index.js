@@ -1,8 +1,8 @@
 import mysql from 'mysql'
 import DbAuth from './database'
-import Routing from './routing'
+import bootstrap from './bootstrap'
 
-export default {
-    Routing: Routing,
-    Db: mysql.createConnection(DbAuth)
-}
+export const 
+    Router =  bootstrap.Router,
+    Container =  bootstrap.Container,
+    Db = mysql.createConnection(DbAuth)

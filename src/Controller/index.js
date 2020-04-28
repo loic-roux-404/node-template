@@ -1,10 +1,10 @@
-import Techs from "./tech.json";
-import Posts from "./post";
+import Tech from "./tech";
+import Post from "./post";
 import Main from "./main";
 
 const controllerMapping = {
-  techs: Techs,
-  posts: Posts,
+  tech: Tech,
+  post: Post,
   main: Main
 };
 
