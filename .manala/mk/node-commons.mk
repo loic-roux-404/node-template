@@ -5,9 +5,15 @@ SHELL = /bin/bash
 ENV_FILE=*.env
 ENVS=$(basename $(wildcard *.env))
 PROD=false
-PKG_MANAGER?=yarn
 
-PKG_MANAGER_GLOBAL:=$(PKG_MANAGER) global add
+# package
+PKG_MANAGER?=yarn
+PKG_MANAGER_I?=$(PKG_MANAGER) install
+ifeq ($(PKG_MANAGER), yarn)
+PROD_I:= --production=true
+else
+PROD_I:= --save-prod
+endif
 
 # deploy
 REMOTE_DIR_DEPLOY=/var/www
@@ -20,8 +26,8 @@ NODE_PATH?=src
 APP?=$(NODE_PATH)/app.js
 NODE_MODULES=node_modules
 prod-exe?=node
-dev-exe?=$(NODE_MODULES)/nodemon/bin/nodemon.js
-EXTS=.pug,.ts,.vue,.js
+EXTS:= .pug,.ts,.vue,.js
+dev-exe?=./$(NODE_MODULES)/nodemon/bin/nodemon.js -e $(EXTS)
 
 .DEFAULT_GOAL := help
 .PHONY: $(NODE_ENVS)
@@ -39,20 +45,22 @@ help:
 	@echo [ === check url chrome://inspect/#devices === ]
 	$(eval ENVS=$(call line, $*.env))
 	NODE_PATH=$(NODE_PATH) $(ENVS) \
-	  ./$($*-exe) $(OPTIONS) \
-	  -r esm -e $(EXTS) $(APP) 
+	  $($*-exe) $(OPTIONS) \
+	  -r esm $(APP) 
 
 # define requirements per envs
 prod.install:
-	$(PKG_MANAGER) install --save --production=true
+	$(PKG_MANAGER_I) $(PROD_I)
 
 dev.install:
-	$(PKG_MANAGER) install --save
-	$(PKG_MANAGER_GLOBAL) nodemon
+	$(PKG_MANAGER_I) --save
+	$(PKG_MANAGER_I) global nodemon
 
-deploy:
-	ssh $(USER_DEPLOY)@$(SSH_ADDRESS) "cd $(REMOTE_DIR_DEPLOY); \
-	git fetch --all && git reset --hard upstream/master"
+deploy: 
+	ssh $(USER_DEPLOY)@$(SSH_ADDRESS) "cd $(REMOTE_DIR_DEPLOY);\
+	/bin/bash -c '\
+	git fetch --all && git reset --hard upstream/master;\
+	PKG_MANAGER=npm make prod.install'"
 
 clear:
 	rm -rf *.log

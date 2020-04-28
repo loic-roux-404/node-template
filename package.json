@@ -8,7 +8,6 @@
     "esm": "^3.2.25",
     "express": "^4.17.1",
     "mysql": "^2.18.1",
-    "nodemon": "^2.0.3",
     "pug": "^2.0.4"
   },
   "esm": {
@@ -17,6 +16,6 @@
   },
   "scripts": {
     "node-dev": "make dev",
-    "node-prod": "NODE_ENV=production node"
+    "node-prod": "make prod"
   }
 }

@@ -13,5 +13,6 @@ API=https://api.alwaysdata.com/v1
 help_more:
 	@echo "[==== node-tp ====]"
 
+# deploy for alwaydata datacenter
 deploy-ald: deploy
-	curl --basic --user $(KEY): $(API)/site/$(ID)
+	curl --basic --request POST --user $(KEY): $(API)/site/$(ID)/restart/
