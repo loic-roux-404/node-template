@@ -9,14 +9,8 @@ PKG_MANAGER?=yarn
 
 PKG_MANAGER_GLOBAL:=$(PKG_MANAGER) global add
 
-# requirements per envs
-define dev-REQ_GLOBALS
-	nodemon
-endef
-
-define REQ
-	esm
-endef
+# deploy
+REMOTE_DIR_DEPLOY=/var/www
 
 # func to generate inline args from file
 line=$(shell cat $(1) | while read line; do echo -n "$$line "; done)
@@ -28,9 +22,6 @@ NODE_MODULES=node_modules
 prod-exe?=node
 dev-exe?=$(NODE_MODULES)/nodemon/bin/nodemon.js
 EXTS=.pug,.ts,.vue,.js
-
-# deploy settings
-RSYNC_EXCLUDE='/**/node_modules/**' '/**/.git/**'
 
 .DEFAULT_GOAL := help
 .PHONY: $(NODE_ENVS)
@@ -59,10 +50,9 @@ dev.install:
 	$(PKG_MANAGER) install --save
 	$(PKG_MANAGER_GLOBAL) nodemon
 
-rsync:
-	rsync -r \
-	$(foreach v,$(RSYNC_EXCLUDE),--exclude $(v))\
-	$(shell pwd)/ $(USER_DEPLOY)@$(SSH_ADDRESS):$(REMOTE_DIR_DEPLOY)/
+deploy:
+	ssh $(USER_DEPLOY)@$(SSH_ADDRESS) "cd $(REMOTE_DIR_DEPLOY); \
+	git fetch --all && git reset --hard upstream/master"
 
 clear:
 	rm -rf *.log

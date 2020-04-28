@@ -1,9 +1,8 @@
-import Container from './container'
-import Db from './database'
+import mysql from 'mysql'
+import DbAuth from './database'
 import Routing from './routing'
 
 export default {
     Routing: Routing,
-    Db: Db,
-    Container: Container
+    Db: mysql.createConnection(DbAuth)
 }

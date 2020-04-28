@@ -1,13 +1,14 @@
-import Techs from "./Tech/techs";
-import Posts from "./Post/posts";
-import Home from "./Main/home";
+import Techs from "./tech.json";
+import Posts from "./post";
+import Main from "./main";
 
-const dataTypes = {
+const controllerMapping = {
   techs: Techs,
   posts: Posts,
-  home: Home
+  main: Main
 };
 
-export const DataFactory = {
-  get: name => dataTypes[name]
+export const ControllerFactory = {
+  get: (name, func = null) => func ? controllerMapping[name][func] : 
+    controllerMapping[func]
 };

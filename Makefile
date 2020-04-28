@@ -13,5 +13,5 @@ API=https://api.alwaysdata.com/v1
 help_more:
 	@echo "[==== node-tp ====]"
 
-deploy-ald: rsync
+deploy-ald: deploy
 	curl --basic --user $(KEY): $(API)/site/$(ID)
