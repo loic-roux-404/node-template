@@ -1,40 +1,20 @@
 import { Router } from 'express'
 import Globals from './globals.js'
-import { ControllerFactory } from '../Controller/index.js'
+import UserRoutes from './routes/users.js'
+import MainRoutes from './routes/main.js'
 
 // create router and supply supported express function
-const router = Router()
-let Pages = []
+const routes = [
+  ...UserRoutes,
+  ...MainRoutes
+]
 
-router
-  .get("/", ControllerFactory.get('main', 'home'));
+const routerBootstraped = Router()
 
-Pages.push({ title: "Accueil", href: "/"})
-
-router
-  .route("/posts")
-  .get(ControllerFactory.get('post','list'));
-
-Pages.push({ title: "Posts", href: "/posts"})
-
-router
-  .route("/posts/show/:id")
-  .get(ControllerFactory.get('post','show'));
-
-router
-  .route("/techs/api")
-  .get(ControllerFactory.get('tech','api'));
-
-router
-  .route("/techs")
-  .get(ControllerFactory.get('tech','list'));
-
-Pages.push({ title: "Techs", href: "/techs"})
-
-export default {
-    Router: router,
-    Container: {
-        pages: Pages,
-        ...Globals
-    }
+for (const { route, verb, _controller } of routes) {
+  routerBootstraped[verb](route, _controller)
 }
+
+const Container = { ...Globals }
+
+export { routerBootstraped, Container }
