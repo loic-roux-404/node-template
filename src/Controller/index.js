@@ -1,6 +1,6 @@
-import Tech from "./tech";
-import Post from "./post";
-import Main from "./main";
+import Tech from "./tech.js";
+import Post from "./post.js";
+import Main from "./main.js";
 
 const controllerMapping = {
   tech: Tech,

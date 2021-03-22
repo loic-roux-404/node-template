@@ -1,16 +1,14 @@
-require('dotenv').config({ 
-    path: `${process.env.NODE_ENV || 'development'}.env` 
-})
-import { Router, Container, Db } from './Config'
+import { config } from 'dotenv'
+import { Router, Container, Db } from './Config/index.js'
 import express from 'express';
+
+config({ path: `${process.env.NODE_ENV || 'development'}.env` })
+
 const app = express()
 
 // Server vars
 const hostname = process.env.IP,
     port = process.env.PORT;
-// Templating  
-app.set('view engine', 'pug');
-app.set('views',`${__dirname}/Views`);
 
 // inject globals
 app.locals = Container

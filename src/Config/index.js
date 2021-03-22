@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
-import DbAuth from './database'
-import bootstrap from './bootstrap'
+import DbAuth from './database.js'
+import bootstrap from './bootstrap.js'
 
 export const 
     Router =  bootstrap.Router,

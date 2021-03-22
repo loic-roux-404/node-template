@@ -9,9 +9,8 @@ export default {
 	},
 	list(req, response) {
 		http.get(techApi, (res) => {
-			res.setEncoding('utf8');
 			res.on('data', function (body) {
-				response.render('techs', {
+				response.json({
 					title: "Async techs",
 					items: JSON.parse(body)
 				});

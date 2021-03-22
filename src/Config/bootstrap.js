@@ -1,7 +1,6 @@
 import { Router } from 'express'
-//import Routes from './routes'
-import Globals from './globals'
-import { ControllerFactory } from '../Controller'
+import Globals from './globals.js'
+import { ControllerFactory } from '../Controller/index.js'
 
 // create router and supply supported express function
 const router = Router()
@@ -38,17 +37,4 @@ export default {
         pages: Pages,
         ...Globals
     }
-}
-
-/**
- * Convert an url path to cool title
- * @example :  _urlToTitle('about-me') => About me
- * @param String path 
- */
-function _urlToTitle(path) {
-    let str = new String(path.match(/((\w|)*[A-z])/g) || 'page')
-    str = str.replace(',', ' ')
-    str = str.charAt(0).toUpperCase() + str.substring(1);
-
-    return str;
 }
