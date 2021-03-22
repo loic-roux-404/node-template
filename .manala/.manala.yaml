@@ -1,4 +1,0 @@
-manala:
-    description: archi
-    sync:
-        - ./mk/node-commons.mk

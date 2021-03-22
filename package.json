@@ -1,14 +1,15 @@
 {
+  "type": "module",
   "name": "node-template",
   "version": "1.0.0",
-  "author": "loic-roux <69loloro10@gmail.com>",
+  "author": "loic-roux <loic-roux-404@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "axios": "^0.19.2",
     "dotenv": "^8.2.0",
     "esm": "^3.2.25",
     "express": "^4.17.1",
-    "mysql": "^2.18.1",
+    "mongoose": "^5.12.1",
     "pug": "^2.0.4"
   },
   "esm": {
@@ -18,10 +19,9 @@
   "scripts": {
     "docker:mongo": "docker pull mongo:latest && docker run --name db mongo:latest",
     "docker:build": "docker build -t api:latest .",
-    "docker:run": "docker run --name node-api --mount source=vol-app,target=/app api:latest",
+    "docker:run": "docker run --name node-api api:latest",
     "docker": "yarn docker:build && yarn docker:run",
-    "start": "${EXE} src/app.js",
-    "dev": "NODE_ENV=development EXE=nodemon yarn start",
-    "prod": "NODE_ENV=production EXE=node yarn start"
+    "prod": "NODE_ENV=production node --experimental-modules src/app.js",
+    "dev": "nodemon src/app.js"
   }
 }
