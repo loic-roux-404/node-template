@@ -1,3 +1,3 @@
 export default {
-    siteName: "Portfolio Loic"
+    siteName: "Api Loic"
 }

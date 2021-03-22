@@ -1,5 +1,4 @@
 const dataPath = '../Views/data/tech.json';
-import { RepositoryFactory } from '../Modules/api'
 import http from 'http'
 
 const techApi = "http://"+process.env.IP+":"+process.env.PORT+"/techs/api"
