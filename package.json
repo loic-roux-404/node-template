@@ -15,7 +15,6 @@
   "dependencies": {
     "axios": "^0.19.2",
     "body-parser": "^1.19.0",
-    "dotenv": "^8.2.0",
     "esm": "^3.2.25",
     "express": "^4.17.1",
     "mongoose": "^5.12.1",
@@ -26,12 +25,8 @@
     "wasm": true
   },
   "scripts": {
-    "docker:mongo": "docker pull mongo:latest && docker run --name db mongo:latest",
-    "docker:build": "docker build -t api:latest .",
-    "docker:run": "docker run --name node-api api:latest",
-    "docker": "yarn docker:build && yarn docker:run",
     "prod": "NODE_ENV=production node --experimental-modules src/app.js",
-    "dev": "nodemon src/app.js",
+    "dev": "env $(cat .env) nodemon src/app.js",
     "lint": "eslint ."
   }
 }

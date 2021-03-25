@@ -14,5 +14,8 @@
     "watch": [
       "src/"
     ],
+    "env":{
+      "PORT": "8080"
+    },
     "ext": "js,json,ts,mjs,ts,graphql"
 }

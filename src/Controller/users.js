@@ -1,14 +1,14 @@
+import UserModel from '../models/user.js'
+
 export default {
   users: {},
-  list (req, res) {
-    const con = req.app.locals.db
-    console.log(con)
-    res.json({})
+  async list (req, res) {
+    const users = await UserModel.find({})
+    console.log(users)
+    res.json({ users })
   },
   show (req, res) {
-    const con = req.app.locals.db
-
-    console.log(con)
     res.json({})
-  }
+  } //,
+  //add(req, res) {}
 }

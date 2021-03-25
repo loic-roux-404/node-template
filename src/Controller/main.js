@@ -1,5 +1,6 @@
+
 export default {
-  home (req, res) {
+  async home (req, res) {
     res.json({
       title: 'Home',
       content: 'Bienvenue sur mon portfolio',
