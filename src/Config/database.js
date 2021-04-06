@@ -9,11 +9,12 @@ const {
 } = process.env
 
 export default () => {
-  const userPass = `${MONGO_PASSWORD}:${MONGO_USERNAME}`
-  const host = `${MONGO_HOSTNAME}:${MONGO_PORT}`
+  // const params = 'mongodb://admin:*****@localhost:27017/bdd?authSource=admin&readPreference=primary&appname=MongoDB%20Compass&ssl=false'
   try {
     mongoose.Promise = Promise
-    mongoose.connect(`mongodb://${userPass}@${host}/${MONGO_DB}`, {
+    mongoose.connect(`\
+      mongodb://${MONGO_PASSWORD}:${MONGO_USERNAME}@${MONGO_HOSTNAME}:${MONGO_PORT}\
+      /${MONGO_DB}?authSource=${MONGO_USERNAME}?ssl=false`, {
       useNewUrlParser: true,
       useUnifiedTopology: true
     })

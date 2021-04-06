@@ -1,14 +1,29 @@
 import UserModel from '../models/user.js'
 
 export default {
-  users: {},
-  async list (req, res) {
-    const users = await UserModel.find({})
-    console.log(users)
-    res.json({ users })
-  },
-  show (req, res) {
-    res.json({})
-  } //,
-  //add(req, res) {}
+  /**
+   * List all users
+   */
+  list: async (_, res) => res.json({ data: await UserModel.find({}) }),
+  /**
+   * @typedef {{
+    *   firstname: String,
+    *   lastname: String,
+    *   email: String
+    * }} RequestShowUser
+    * @param {{ body: RequestShowUser }} req
+    */
+  show: async ({ query }, res) => res.json({ data: await UserModel.find(query) }),
+  /**
+   * @typedef {{
+   *   firstname: String,
+   *   lastname: String,
+   *   email: String,
+   *   password: String
+   * }} RequestAddUser
+   * @param {{ body: RequestAddUser }} req
+   */
+  add: async ({ body }, res) => res.json({
+    data: await UserModel.create(new UserModel(body))
+  })
 }

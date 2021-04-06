@@ -1,20 +1,17 @@
-import { Router } from 'express'
+
 import Globals from './globals.js'
-import UserRoutes from './routes/users.js'
-import MainRoutes from './routes/main.js'
+import UserRoutes from '../routes/users.js'
+import MainRoutes from '../routes/main.js'
+import registerRoutes from '../modules/routerRegistery.js'
 
 // create router and supply supported express function
-const routes = [
-  ...UserRoutes,
-  ...MainRoutes
-]
+const routerBootstraped = registerRoutes([
+  UserRoutes,
+  MainRoutes
+])
 
-const routerBootstraped = Router()
+const Services = {}
 
-for (const { route, verb, _controller } of routes) {
-  routerBootstraped[verb](route, _controller)
-}
-
-const Container = { ...Globals }
+const Container = { ...Globals, Services }
 
 export { routerBootstraped, Container }
