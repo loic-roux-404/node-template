@@ -1,12 +1,6 @@
-import { Response, Params, Controller, Get, Post, Query } from '@decorators/express';
-import UserModel from '../models/user.js'
-
-type UserPayload = {
-    firstname: string,
-    lastname: string,
-    email: string,
-    password: string
-}
+import { Response, Params, Controller, Get, Post, Query, Patch, Put } from '@decorators/express';
+import { default as UserModel, UserPayload } from '../models/user.js'
+import { Response as ExpressResponse } from 'express';
 
 @Controller('/users')
 export default class {
@@ -26,16 +20,30 @@ export default class {
    * Show a single user
    */
   @Get('/')
-  async list(@Response() res: any): Promise<void> {
+  async list(@Response() res: ExpressResponse): Promise<void> {
     return this.read(res, undefined, {})
   }
   /**
    * Add User
    */
-  @Post('/')
-  async create({ body }: { body: UserPayload }, res: any): Promise<void> {
+  @Put('/')
+  async create({ body }: { body: UserPayload }, res: ExpressResponse): Promise<void> {
     res.json({
       data: await UserModel.create(new UserModel(body))
     })
   }
+
+  @Post('/')
+  async createListOrSingle(
+    { body }: { body: Array<UserPayload> | UserPayload }, res: ExpressResponse
+  ): Promise<void> {
+    res.json({
+      data: body instanceof Array
+        ? body.map(async (model) => await UserModel.create(new UserModel(model)))
+        : await UserModel.create(new UserModel(body))
+    })
+  }
+
+  @Patch('/:firstname')
+  async update() {}
 }

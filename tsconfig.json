@@ -13,7 +13,8 @@
     "forceConsistentCasingInFileNames": true,
     "experimentalDecorators": true,
     "typeRoots": [
-      "node_modules/@types/express"
+      "node_modules/@types/express",
+      "node_modules/@types/mongoose"
     ]
   },
   "include": ["src"]

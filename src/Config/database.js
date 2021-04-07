@@ -14,11 +14,13 @@ export default () => {
     mongoose.Promise = Promise
     mongoose.connect(`\
       mongodb://${MONGO_PASSWORD}:${MONGO_USERNAME}@${MONGO_HOSTNAME}:${MONGO_PORT}\
-      /${MONGO_DB}?authSource=${MONGO_USERNAME}?ssl=false`, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true
-    })
+      /${MONGO_DB}?authSource=${MONGO_USERNAME}?ssl=false`,
+      {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+      }
+    )
   } catch (e) {
-    console.log('Database error : ', e)
+    console.error('Database error', e)
   }
 }
