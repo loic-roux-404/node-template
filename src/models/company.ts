@@ -7,7 +7,7 @@ const CompanyModel: Schema<Document, Company> = new Schema<Document, Company>({
   }
 })
 
-export interface Company {
+export interface Company extends Document {
   name: string
 }
 

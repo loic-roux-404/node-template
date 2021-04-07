@@ -43,13 +43,6 @@ enum Gender {
   Female = 0
 }
 
-export interface UserPayload {
-  firstname: string,
-  lastname: string,
-  email: string,
-  password: string
-}
-
 export interface User extends UserPayload {
   firstName: string;
   lastName?: string;
