@@ -24,7 +24,7 @@
     "esm": "^3.2.25",
     "express": "^4.17.1",
     "mongoose": "^5.12.1",
-    "pug": "^2.0.4"
+    "pug": "^3.0.1"
   },
   "scripts": {
     "prod": "etsc && NODE_ENV=production node dist/app.js",
