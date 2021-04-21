@@ -43,7 +43,7 @@ enum Gender {
   Female = 0
 }
 
-export interface User extends UserPayload {
+export interface User {
   firstName: string;
   lastName?: string;
   username: string;
@@ -68,7 +68,7 @@ interface UserBaseDocument extends User, Document {
 
 // For model
 export interface UserModel extends Model<UserDocument> {
-  findMyCompany(id: string): Promise<UserPopulatedDocument>
+  findMyCompany(id: string): Promise<UserDocument>
 }
 
 // Export this for strong typing
@@ -76,10 +76,6 @@ export interface UserDocument extends UserBaseDocument {
   company: Company["_id"];
 }
 
-// Export this for strong typing
-export interface UserPopulatedDocument extends UserBaseDocument {
-  company: Company;
-}
 
 // Static methods
 UserSchema.statics.findMyCompany = async function(
@@ -95,7 +91,7 @@ UserSchema.virtual("fullName").get(function(this: UserBaseDocument) {
 })
 
 // Document middlewares
-UserSchema.pre<UserDocument>("save", function(next) {
+UserSchema.pre<UserDocument>("save", function(_) {
   if (this.isModified("password")) {
     this.password = this.password//hashPassword(this.password)
   }

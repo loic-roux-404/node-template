@@ -7,18 +7,14 @@ export default class {
   /**
    * List all users
    */
-  @Get('/:nom')
+  @Get('/:name')
   async read(
-    @Response() res: any,
-    @Params('nom') nom: string | undefined,
+    @Response() res: ExpressResponse,
+    @Params('name') nom: string | undefined,
     @Query() query: Product | {}
   ): Promise<void> {
     const dataQuery = nom ? { nom } : query
     console.log(dataQuery)
-    res.json({ data: [{
-        nom: "toto",
-        marque: "tata"
-      }]
-    })
+    res.json({ data: {} })
   }
 }
