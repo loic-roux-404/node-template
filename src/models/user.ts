@@ -1,5 +1,5 @@
 import { Document, Model, model, Types, Schema } from "mongoose"
-import { Company } from "./company"
+import { HotelDocument } from "./hotel"
 
 // Schema
 const UserSchema: Schema<UserDocument, UserModel> = new Schema<UserDocument, UserModel>({
@@ -18,15 +18,9 @@ const UserSchema: Schema<UserDocument, UserModel> = new Schema<UserDocument, Use
     type: String,
     required: true
   },
-  company: {
+  currentHotel: {
     type: Schema.Types.ObjectId,
-    ref: "Company",
-    required: true
-  },
-  gender: {
-    type: Number,
-    enum: [0, 1],
-    default: 0,
+    ref: "Hotel",
     required: true
   },
   friends: [{
@@ -38,56 +32,39 @@ const UserSchema: Schema<UserDocument, UserModel> = new Schema<UserDocument, Use
   }
 })
 
-enum Gender {
-  Male = 1,
-  Female = 0
-}
-
-export interface User {
+interface User {
   firstName: string;
   lastName?: string;
   username: string;
   password: string;
-  company: Types.ObjectId | Record<string, unknown>;
-  gender: Gender;
+  currentHotel: Types.ObjectId | Record<string, unknown>;
   friends: Array<string>;
   creditCards?: Map<string, string>;
 }
 
-/**
- * Not directly exported because it is not recommanded to
- * use this interface direct unless necessary since the
- * type of `company` field is not deterministic
- */
-interface UserBaseDocument extends User, Document {
+export interface UserDocument extends User, Document {
   friends: Types.Array<string>;
   creditCards?: Types.Map<string>;
   fullName: string;
-  getGender(): string;
+  hotel?: HotelDocument["_id"];
 }
 
 // For model
 export interface UserModel extends Model<UserDocument> {
-  findMyCompany(id: string): Promise<UserDocument>
+  findHotel(id: string): Promise<UserDocument>
 }
-
-// Export this for strong typing
-export interface UserDocument extends UserBaseDocument {
-  company: Company["_id"];
-}
-
 
 // Static methods
-UserSchema.statics.findMyCompany = async function(
+UserSchema.statics.findHotel = async function(
   this: Model<UserDocument>,
   id: string
 ) {
-  return this.findById(id).populate("company").exec()
+  return this.findById(id).populate("hotel").exec()
 }
 
 // Virtuals
-UserSchema.virtual("fullName").get(function(this: UserBaseDocument) {
-  return this.firstName + this.lastName
+UserSchema.virtual("fullName").get(function(this: UserDocument) {
+  return `${this.firstName} ${this.lastName||''}`
 })
 
 // Document middlewares

@@ -1,8 +1,8 @@
-import DbAuth from './database.js'
+import mongoInit from './database.js'
 import UsersController from '../controllers/UserController.js'
 import MainController from '../controllers/MainController.js'
 import ProductController from '../controllers/ProductController.js'
-import Globals from './globals.js'
+import containerInit from './container.js'
 
 const controllers = [
   MainController,
@@ -10,6 +10,4 @@ const controllers = [
   ProductController
 ]
 
-const Container = { ...Globals }
-
-export { DbAuth, Container, controllers }
+export { mongoInit, controllers, containerInit}

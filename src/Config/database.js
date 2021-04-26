@@ -17,7 +17,9 @@ export default () => {
       /${MONGO_DB}?authSource=${MONGO_USERNAME}?ssl=false`,
       {
         useNewUrlParser: true,
-        useUnifiedTopology: true
+        useUnifiedTopology: true,
+        useFindAndModify: false,
+        useCreateIndex: true
       }
     )
   } catch (e) {

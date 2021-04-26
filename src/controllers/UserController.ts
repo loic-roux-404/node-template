@@ -1,8 +1,9 @@
 import { Response, Request, Params, Controller, Get, Post, Query, Patch, Put } from '@decorators/express';
 import { default as UserModel, UserDocument } from '../models/user.js'
-import { Response as ExpressResponse, Request as ExpressRequest } from 'express';
+import { Response as ExpressResponse } from 'express';
+import { ServerErrorMiddleware } from '../middlewares/ServerErrorMiddleware.js';
 
-@Controller('/users')
+@Controller('/users', ServerErrorMiddleware)
 export default class {
   /**
    * List all users
@@ -25,9 +26,7 @@ export default class {
   }
 
   /**
-   *
-   * @param {body: UserDocument}
-   * @param res
+   * Create
    */
   @Put('/')
   async create(
@@ -39,13 +38,12 @@ export default class {
   }
 
   /**
-   *
-   * @param param0
-   * @param res
+   * Create list of objects
    */
   @Post('/')
   async createListOrSingle(
-    { body }: { body: Array<UserDocument> | UserDocument }, res: ExpressResponse
+    { body }: { body: Array<UserDocument> | UserDocument },
+    res: ExpressResponse
   ): Promise<void> {
     res.json({
       data: body instanceof Array
@@ -56,10 +54,6 @@ export default class {
 
   /**
    * Update using username
-   *
-   * @param res
-   * @param firstname
-   * @param query
    */
   @Patch('/:firstname')
   async update(

@@ -1,23 +1,17 @@
-import { controllers, Container, DbAuth } from './config/index.js'
+import { controllers, mongoInit, containerInit } from './config/index.js'
 import express from 'express'
 import { attachControllers } from '@decorators/express'
+import morgan from 'morgan'
 
 const app = express()
 
-DbAuth()
-
-app.locals = Container
+mongoInit()
+containerInit()
 
 // Init builded app router
 attachControllers(app, controllers)
 
-// API Middleware
-app.use((_, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*')
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT , DELETE')
-  next()
-})
+app.use(morgan('combined'));
 
 // Server init
 const { IP, PORT } = {
