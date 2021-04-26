@@ -21,7 +21,7 @@ const UserSchema: Schema<UserDocument, UserModel> = new Schema<UserDocument, Use
   currentHotel: {
     type: Schema.Types.ObjectId,
     ref: "Hotel",
-    required: true
+    required: false
   },
   friends: [{
     type: String,

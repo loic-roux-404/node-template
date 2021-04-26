@@ -1,17 +1,16 @@
 import { controllers, mongoInit, containerInit } from './config/index.js'
 import express from 'express'
 import { attachControllers } from '@decorators/express'
-import morgan from 'morgan'
+import { LoggerMiddleware, LoggerErrorMiddleware } from './middlewares/LoggerMiddleware'
 
 const app = express()
 
+// Bootstrap
 mongoInit()
 containerInit()
-
-// Init builded app router
 attachControllers(app, controllers)
-
-app.use(morgan('combined'));
+app.use(LoggerMiddleware)
+app.use(LoggerErrorMiddleware)
 
 // Server init
 const { IP, PORT } = {

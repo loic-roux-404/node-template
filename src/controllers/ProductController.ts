@@ -1,5 +1,5 @@
 import { Response, Params, Controller, Get, Query } from '@decorators/express';
-import Product from '../models/product.js'
+import Product from '../models/room.js'
 import { Response as ExpressResponse } from 'express';
 
 @Controller('/products')
