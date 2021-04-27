@@ -31,7 +31,7 @@
   },
   "scripts": {
     "prod": "etsc && NODE_ENV=production node dist/app.js",
-    "dev": "env $(cat .env) nodemon dist/app.js",
+    "dev": "eval $(egrep -v '^#' .env | xargs) nodemon dist/app.js",
     "lint": "eslint ."
   }
 }

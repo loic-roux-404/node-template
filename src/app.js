@@ -13,11 +13,12 @@ app.use(LoggerMiddleware)
 app.use(LoggerErrorMiddleware)
 
 // Server init
-const { IP, PORT } = {
-  ...{ IP: '127.0.0.1', PORT: '80' },
+const { NODE_ENV, IP, PORT } = {
+  ...{ IP: '0.0.0.0', PORT: '80' },
   ...process.env
 }
 
 app.listen(PORT, IP, () => {
+  console.info(`Running in ${NODE_ENV} environment`)
   console.info(`Server running at http://${IP}:${PORT}`)
 })
