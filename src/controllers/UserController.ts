@@ -1,9 +1,8 @@
 import { Response, Request, Params, Controller, Get, Post, Query, Patch, Put } from '@decorators/express';
 import { default as UserModel, UserDocument } from '../models/user.js'
 import { Response as ExpressResponse } from 'express';
-import { ServerErrorMiddleware } from '../middlewares/ServerErrorMiddleware.js';
 
-@Controller('/users', ServerErrorMiddleware)
+@Controller('/users')
 export default class {
   /**
    * List all users

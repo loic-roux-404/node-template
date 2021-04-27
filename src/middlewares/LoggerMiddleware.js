@@ -1,3 +1,6 @@
+/**
+ * Midddleware for direct use with app
+ */
 import morgan from 'morgan'
 import path from 'path'
 import fs from 'fs'
