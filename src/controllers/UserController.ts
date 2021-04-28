@@ -5,12 +5,13 @@ import {
   Get,
   Post,
   Query,
-  Patch,
   Put,
   Body,
+  Delete,
 } from "@decorators/express";
 import UserModel, { UserDocument } from "../models/User";
 import { Response as ExpressResponse } from "express";
+import { updateUtil, deleteUtil } from "../modules/crudUtil";
 
 @Controller("/users")
 export default class {
@@ -68,14 +69,35 @@ export default class {
   /**
    * Update using username
    */
-  @Patch("/:username")
+  @Put("/:username")
   async update(
     @Body() body: UserDocument,
-    @Response() res: any,
-    @Params("username") username?: string
+    @Response() res: ExpressResponse,
+    @Params("username") username: string
   ): Promise<void> {
-    return res.json({
-      data: UserModel.updateOne({ username }, body),
+    const { data, status } = await updateUtil({
+      model: UserModel,
+      query: { username },
+      body,
+    });
+    res.status(status).json({
+      data,
+    });
+  }
+
+  @Delete("/:username")
+  async delete(
+    @Body() body: UserDocument,
+    @Response() res: ExpressResponse,
+    @Params("username") username: string
+  ): Promise<void> {
+    const { data, status } = await deleteUtil({
+      model: UserModel,
+      query: { username },
+      body,
+    });
+    res.status(status).json({
+      data,
     });
   }
 }

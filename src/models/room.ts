@@ -12,11 +12,16 @@ const RoomSchema: Schema<RoomDocument, RoomBaseModel> = new Schema<
     type: Number,
     required: true,
   },
+  price: {
+    type: Number,
+    required: true,
+  },
 });
 
 interface Room {
   name: string;
   capacity: number;
+  price: number;
 }
 
 export interface RoomDocument extends Room, Document {}
