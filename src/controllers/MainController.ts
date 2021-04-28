@@ -1,12 +1,12 @@
-import { Get, Response, Controller } from '@decorators/express';
+import { Get, Response, Controller } from "@decorators/express";
 
-@Controller('/')
+@Controller("/")
 export default class {
-  @Get('')
+  @Get("")
   async list(@Response() res: any): Promise<void> {
     res.json({
-      title: 'Home',
-      content: 'Attttttend'
-    })
+      title: "Home",
+      content: "Attttttend",
+    });
   }
 }

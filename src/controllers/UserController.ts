@@ -1,70 +1,83 @@
-import { Response, Request, Params, Controller, Get, Post, Query, Patch, Put } from '@decorators/express';
-import { default as UserModel, UserDocument } from '../models/user.js'
-import { Response as ExpressResponse } from 'express';
+import {
+  Response,
+  Request,
+  Params,
+  Controller,
+  Get,
+  Post,
+  Query,
+  Patch,
+  Put,
+  Body,
+} from "@decorators/express";
+import UserModel, { UserDocument } from "../models/user.js";
+import { Response as ExpressResponse } from "express";
 
-@Controller('/users')
+@Controller("/users")
 export default class {
   /**
    * List all users
    */
-  @Get('/:firstname')
+  @Get("/:username")
   async read(
     @Response() res: any,
-    @Params('firstname') firstname: string | undefined,
-    @Query() query: UserDocument | {}
+    @Query() query: UserDocument | {} = {},
+    @Params("username") username?: string
   ): Promise<void> {
-    const dataQuery = firstname ? { firstname } : query
-    res.json({ data: await UserModel.find(dataQuery) })
+    const _query = username != null ? { username } : query;
+    res.json({ data: await UserModel.find(_query) });
   }
+
   /**
    * Show a single user
    */
-  @Get('/')
+  @Get("/")
   async list(@Response() res: ExpressResponse): Promise<void> {
-    return this.read(res, undefined, {})
+    return await this.read(res);
   }
 
   /**
    * Create
    */
-  @Put('/')
+  @Put("/")
   async create(
     @Request() { body }: { body: UserDocument },
-    @Response() res: ExpressResponse): Promise<void> {
+    @Response() res: ExpressResponse
+  ): Promise<void> {
     res.json({
-      data: await UserModel.create(new UserModel(body))
-    })
+      data: await UserModel.create(new UserModel(body)),
+    });
   }
 
   /**
    * Create list of objects
    */
-  @Post('/')
+  @Post("/")
   async createListOrSingle(
-    { body }: { body: Array<UserDocument> | UserDocument },
+    { body }: { body: UserDocument[] | UserDocument },
     res: ExpressResponse
   ): Promise<void> {
     res.json({
-      data: body instanceof Array
-        ? body.map(async (model) => await UserModel.create(new UserModel(model)))
-        : await UserModel.create(new UserModel(body))
-    })
+      data:
+        body instanceof Array
+          ? body.map(
+              async (model) => await UserModel.create(new UserModel(model))
+            )
+          : await UserModel.create(new UserModel(body)),
+    });
   }
 
   /**
    * Update using username
    */
-  @Patch('/:firstname')
+  @Patch("/:username")
   async update(
-    @Request() { body: query }: { body: UserDocument },
+    @Body() body: UserDocument,
     @Response() res: any,
-    @Params('firstname') firstname: string | undefined,
-  ) {
+    @Params("username") username?: string
+  ): Promise<void> {
     return res.json({
-      data: UserModel.updateOne(
-        { firstname },
-        query
-      )
-    })
+      data: UserModel.updateOne({ username }, body),
+    });
   }
 }

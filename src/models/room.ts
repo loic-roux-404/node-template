@@ -1,6 +1,6 @@
-type Room = {
-  marque: string
-  nom: string
+interface Room {
+  marque: string;
+  nom: string;
 }
 
-export default Room
+export default Room;

@@ -1,3 +1,3 @@
 export default {
-  siteName: 'Api Loic'
-}
+  siteName: "Api Loic",
+};

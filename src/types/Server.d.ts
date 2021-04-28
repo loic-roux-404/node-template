@@ -1,5 +1,5 @@
-import { Request } from 'express';
+import { Request } from "express";
 
 export interface FailedRequest extends Request {
-  error: Error
+  error: Error;
 }
