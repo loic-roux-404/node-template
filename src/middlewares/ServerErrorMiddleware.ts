@@ -12,7 +12,7 @@ export class ServerErrorMiddleware implements ErrorMiddleware {
     response: Response,
     next: NextFunction
   ): void {
-    handleError(error, request, response, 500);
+    handleError(error, request, response);
     next();
   }
 }
