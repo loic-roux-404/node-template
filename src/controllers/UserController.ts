@@ -1,6 +1,5 @@
 import {
   Response,
-  Request,
   Params,
   Controller,
   Get,
