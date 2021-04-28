@@ -1,7 +1,7 @@
 import { Response, Params, Controller, Get, Query } from "@decorators/express";
-import Product from "../models/room.js";
+// import Room from "../models/Room";
 import { Response as ExpressResponse } from "express";
-import HotelModel from "../models/Hotel";
+import HotelModel, { HotelDocument } from "../models/Hotel";
 
 @Controller("/hotels")
 export default class {
@@ -11,7 +11,7 @@ export default class {
   @Get("/:name")
   async read(
     @Response() res: ExpressResponse,
-    @Query() query: Product | {} = {},
+    @Query() query: HotelDocument | {} = {},
     @Params("name") nom?: string
   ): Promise<void> {
     const dataQuery = nom != null ? { nom } : query;

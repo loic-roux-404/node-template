@@ -9,14 +9,15 @@ import bodyParser from "body-parser";
 
 const app = express();
 
-// Bootstrap
+// Scaffold app
 mongoInit();
 containerInit();
-attachControllers(app, controllers);
 app.use(bodyParser.json());
-app.use(bodyParser.urlEncoded({}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(LoggerMiddleware);
 app.use(LoggerErrorMiddleware);
+// For decorators
+attachControllers(app, controllers);
 
 // Server init
 const { NODE_ENV, IP, PORT } = {

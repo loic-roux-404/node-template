@@ -32,15 +32,12 @@ interface User {
   firstName: string;
   lastName?: string;
   username: string;
-  password: string;
-  currentHotel: Types.ObjectId | Record<string, unknown>;
+  // password: string;
 }
 
 export interface UserDocument extends User, Document {
-  friends: Types.Array<string>;
-  creditCards?: Types.Map<string>;
   fullName: string;
-  hotel?: HotelDocument["_id"];
+  currentHotel?: HotelDocument["_id"];
 }
 
 // For model

@@ -10,7 +10,7 @@ import {
   Put,
   Body,
 } from "@decorators/express";
-import UserModel, { UserDocument } from "../models/user.js";
+import UserModel, { UserDocument } from "../models/User";
 import { Response as ExpressResponse } from "express";
 
 @Controller("/users")
@@ -41,7 +41,7 @@ export default class {
    */
   @Put("/")
   async create(
-    @Request() { body }: { body: UserDocument },
+    @Body() body: UserDocument,
     @Response() res: ExpressResponse
   ): Promise<void> {
     res.json({
@@ -54,16 +54,15 @@ export default class {
    */
   @Post("/")
   async createListOrSingle(
-    { body }: { body: UserDocument[] | UserDocument },
-    res: ExpressResponse
+    @Body() body: UserDocument[] | UserDocument,
+    @Response() res: ExpressResponse
   ): Promise<void> {
     res.json({
-      data:
+      data: await UserModel.insertMany(
         body instanceof Array
-          ? body.map(
-              async (model) => await UserModel.create(new UserModel(model))
-            )
-          : await UserModel.create(new UserModel(body)),
+          ? body.map((e) => new UserModel(e))
+          : [new UserModel(body)]
+      ),
     });
   }
 

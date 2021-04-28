@@ -11,7 +11,9 @@ const { LOG_DIR } = {
 };
 
 morgan.token("error", function getError({ error }) {
-  return `Error: ${error.toString()} ${error.stack?.toString() || ""}`;
+  return error
+    ? `Error: ${error.toString()} ${error.stack?.toString() || ""}`
+    : "Unknown Error";
 });
 
 morgan.format(

@@ -1,8 +1,9 @@
 import { Document, Schema, Model, model } from "mongoose";
+import { RoomDocument } from "./Room";
 
-const HotelSchema: Schema<HotelDocument, HotelModel> = new Schema<
+const HotelSchema: Schema<HotelDocument, HotelBaseModel> = new Schema<
   HotelDocument,
-  HotelModel
+  HotelBaseModel
 >({
   name: {
     type: String,
@@ -24,9 +25,16 @@ const HotelSchema: Schema<HotelDocument, HotelModel> = new Schema<
     type: Object,
     required: true,
   },
+  rooms: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Room",
+      required: false,
+    },
+  ],
 });
 
-export interface Hotel {
+interface Hotel {
   name: string;
   supply: string[];
   address: String;
@@ -34,8 +42,18 @@ export interface Hotel {
   coordinates: Object;
 }
 
-export interface HotelDocument extends Hotel, Document {}
+export interface HotelDocument extends Hotel, Document {
+  rooms?: [RoomDocument["_id"]];
+}
 
-export interface HotelModel extends Model<HotelDocument> {}
+export interface HotelBaseModel extends Model<HotelDocument> {}
 
-export default model<HotelDocument, HotelModel>("Hotel", HotelSchema);
+// Static methods
+HotelSchema.statics.findRooms = async function (
+  this: Model<HotelDocument>,
+  id: string
+): Promise<HotelDocument | null> {
+  return await this.findById(id).populate("rooms").exec();
+};
+
+export default model<HotelDocument, HotelBaseModel>("Hotel", HotelSchema);

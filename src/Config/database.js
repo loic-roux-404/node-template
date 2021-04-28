@@ -9,7 +9,6 @@ const {
 } = process.env;
 
 export default () => {
-  // const params = 'mongodb://admin:*****@localhost:27017/bdd?authSource=admin&readPreference=primary&appname=MongoDB%20Compass&ssl=false'
   try {
     mongoose.Promise = Promise;
     mongoose.connect(
