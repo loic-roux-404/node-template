@@ -1,7 +1,18 @@
 {
   "root": true,
-  "extends": ["standard-with-typescript", "plugin:prettier/recommended"],
+  "extends": [
+    "standard-with-typescript",
+    "plugin:prettier/recommended"
+  ],
   "parserOptions": {
     "project": "./tsconfig.json"
+  },
+  "rules": {
+    "@typescript-eslint/no-misused-promises": [
+      "error",
+      {
+        "checksVoidReturn": false
+      }
+    ]
   }
 }

@@ -28,16 +28,13 @@ export default class UserController implements CRLUD {
    * List all users
    * Param override query
    */
-  @Get("/:username")
+  @Get("/:name")
   async read(
     @Query() query: UserDocument | {},
-    @Params("username") username: string | undefined,
+    @Params("name") name: string | undefined,
     @Response() res: any
   ): Promise<void> {
-    jsonWithStatus(
-      res,
-      await readUtil({ model: UserModel, query }, { username })
-    );
+    jsonWithStatus(res, await readUtil({ model: UserModel, query }, { name }));
   }
 
   /**
@@ -65,17 +62,17 @@ export default class UserController implements CRLUD {
   /**
    * Update when knowning entity
    */
-  @Patch("/:username")
+  @Patch("/:name")
   async update(
     @Body() body: UserDocument,
     @Response() res: ExpressResponse,
-    @Params("username") username: string
+    @Params("name") name: string
   ): Promise<void> {
     jsonWithStatus(
       res,
       await updateUtil({
         model: UserModel,
-        query: { username },
+        query: { name },
         body,
       })
     );
@@ -85,7 +82,7 @@ export default class UserController implements CRLUD {
    * Flexible create, for a list of objects or a single one
    */
   @Post("/")
-  async createListOrSingle(
+  async batchCreate(
     @Body() body: UserDocument[] | UserDocument,
     @Response() res: ExpressResponse
   ): Promise<void> {
@@ -95,18 +92,17 @@ export default class UserController implements CRLUD {
   /**
    * Delete an entity
    */
-  @Delete("/:username")
+  @Delete("/:name")
   async delete(
-    @Body() body: UserDocument,
+    @Query() query: UserDocument,
     @Response() res: ExpressResponse,
-    @Params("username") username: string
+    @Params("name") name: string
   ): Promise<void> {
     jsonWithStatus(
       res,
       await deleteUtil({
         model: UserModel,
-        query: { username },
-        body,
+        query: { ...query, name },
       })
     );
   }

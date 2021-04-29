@@ -1,4 +1,4 @@
-import { Document, Schema, Model, model } from "mongoose";
+import { Document, Schema, Model, model, Types } from "mongoose";
 import RoomModel, { RoomDocument, RoomBaseModel } from "./Room";
 import moment from "moment";
 
@@ -6,13 +6,15 @@ const bookingSchema: Schema<BookingDocument, BookingBaseModel> = new Schema<
   BookingDocument,
   BookingBaseModel
 >({
-  rooms: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "Room",
-      required: true,
-    },
-  ],
+  name: {
+    type: String,
+    required: true,
+  },
+  room: {
+    type: Types.ObjectId,
+    ref: "Room",
+    required: true,
+  },
   dateArrival: {
     type: String,
     required: true,
@@ -32,16 +34,13 @@ const bookingSchema: Schema<BookingDocument, BookingBaseModel> = new Schema<
 });
 
 interface Booking {
-  rooms: RoomBaseModel[];
+  room: RoomBaseModel[];
   dateArrival: string;
   dateDeparture: string;
   price: number;
   comment: string;
 }
 
-// Hook delete all rooms
-
-// eslint-disable-next-line @typescript-eslint/no-misused-promises
 bookingSchema.pre("save", async function (next): Promise<void> {
   let price = 0;
 

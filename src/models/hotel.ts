@@ -1,4 +1,4 @@
-import { Document, Schema, Model, model } from "mongoose";
+import { Document, Schema, Model, model, Types } from "mongoose";
 import { RoomDocument } from "./Room";
 
 const HotelSchema: Schema<HotelDocument, HotelBaseModel> = new Schema<
@@ -11,6 +11,7 @@ const HotelSchema: Schema<HotelDocument, HotelBaseModel> = new Schema<
   },
   address: {
     type: String,
+    unique: true,
     required: true,
   },
   supply: {
@@ -18,7 +19,7 @@ const HotelSchema: Schema<HotelDocument, HotelBaseModel> = new Schema<
     required: true,
   },
   rate: {
-    type: Array,
+    type: Number,
     required: true,
   },
   coordinates: {
@@ -27,7 +28,7 @@ const HotelSchema: Schema<HotelDocument, HotelBaseModel> = new Schema<
   },
   rooms: [
     {
-      type: Schema.Types.ObjectId,
+      type: Types.ObjectId,
       ref: "Room",
       required: false,
     },

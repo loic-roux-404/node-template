@@ -11,7 +11,7 @@ const UserSchema: Schema<UserDocument, UserModel> = new Schema<
     required: true,
   },
   lastName: String,
-  username: {
+  name: {
     type: String,
     unique: true,
     required: true,
@@ -31,7 +31,7 @@ const UserSchema: Schema<UserDocument, UserModel> = new Schema<
 interface User {
   firstName: string;
   lastName?: string;
-  username: string;
+  name: string;
   // password: string;
 }
 
