@@ -1,5 +1,5 @@
 import { Document, Model, model, Types, Schema } from "mongoose";
-import { HotelDocument } from "./hotel";
+import { HotelDocument } from "./Hotel";
 
 // Schema
 const UserSchema: Schema<UserDocument, UserModel> = new Schema<
@@ -22,7 +22,7 @@ const UserSchema: Schema<UserDocument, UserModel> = new Schema<
   //   required: true,
   // },
   currentHotel: {
-    type: Schema.Types.ObjectId,
+    type: Types.ObjectId,
     ref: "Hotel",
     required: false,
   },

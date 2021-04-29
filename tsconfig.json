@@ -14,7 +14,8 @@
     "experimentalDecorators": true,
     "typeRoots": [
       "node_modules/@types/express",
-      "node_modules/@types/mongoose"
+      "node_modules/@types/mongoose",
+      "node_modules/@types/lodash"
     ]
   },
   "include": ["src"]
