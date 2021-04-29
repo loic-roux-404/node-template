@@ -2,6 +2,7 @@ import { Model } from "mongoose";
 import { Response as ExpressResponse } from "express";
 import isEmpty from "lodash/isEmpty";
 
+// TODO transform as a service
 interface QueryObject {
   [key: string]: any;
 }

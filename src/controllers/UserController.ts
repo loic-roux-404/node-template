@@ -20,9 +20,10 @@ import {
   jsonWithStatus,
   createUtil,
 } from "../modules/crudUtil";
+import { CRLUD } from "../types/Framework";
 
 @Controller("/users")
-export default class {
+export default class UserController implements CRLUD {
   /**
    * List all users
    * Param override query
@@ -33,7 +34,6 @@ export default class {
     @Params("username") username: string | undefined,
     @Response() res: any
   ): Promise<void> {
-    console.log(res);
     jsonWithStatus(
       res,
       await readUtil({ model: UserModel, query }, { username })
