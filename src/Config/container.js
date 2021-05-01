@@ -4,5 +4,7 @@ import ServerMiddlewareProvider from "../middlewares/ServerErrorMiddleware";
 import variableProvide from "../modules/variableProvideToContainer";
 import Globals from "./globals";
 
+const middlewares = [ServerMiddlewareProvider];
+
 export default () =>
-  Container.provide([ServerMiddlewareProvider, ...variableProvide(Globals)]);
+  Container.provide([...middlewares, ...variableProvide(Globals)]);

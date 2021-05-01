@@ -1,9 +1,15 @@
 import mongoInit from "./database.js";
-import UsersController from "../controllers/UserController.js";
-import MainController from "../controllers/MainController.js";
-import ProductController from "../controllers/HotelController.js";
+import UsersController from "../controllers/UserController";
+import MainController from "../controllers/MainController";
+import ProductController from "../controllers/HotelController";
+import RoomController from "../controllers/RoomController";
 import containerInit from "./container.js";
 
-const controllers = [MainController, UsersController, ProductController];
+const controllers = [
+  MainController,
+  UsersController,
+  ProductController,
+  RoomController,
+];
 
 export { mongoInit, controllers, containerInit };

@@ -41,6 +41,7 @@ interface Booking {
   comment: string;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-misused-promises
 bookingSchema.pre("save", async function (next): Promise<void> {
   let price = 0;
 

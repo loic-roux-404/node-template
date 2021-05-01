@@ -20,9 +20,11 @@ export default () => {
         useUnifiedTopology: true,
         useFindAndModify: false,
         useCreateIndex: true,
+        serverSelectionTimeoutMS: 1000,
       }
     );
   } catch (e) {
     console.error("Database error", e);
+    throw e;
   }
 };

@@ -13,6 +13,7 @@ const HotelSchema: Schema<HotelDocument, HotelBaseModel> = new Schema<
     type: String,
     unique: true,
     required: true,
+    lowercase: true,
   },
   supply: {
     type: Array,
@@ -47,7 +48,7 @@ export interface HotelDocument extends Hotel, Document {
   rooms?: [RoomDocument["_id"]];
 }
 
-export interface HotelBaseModel extends Model<HotelDocument> {}
+export interface HotelBaseModel extends Model<HotelDocument> { }
 
 // Static methods
 HotelSchema.statics.findRooms = async function (
