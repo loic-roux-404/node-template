@@ -1,6 +1,7 @@
 import { Document, Schema, Model, model, Types } from "mongoose";
 import RoomModel, { RoomDocument, RoomBaseModel } from "./Room";
 import moment from "moment";
+import { Injectable } from "@decorators/di";
 
 const bookingSchema: Schema<BookingDocument, BookingBaseModel> = new Schema<
   BookingDocument,

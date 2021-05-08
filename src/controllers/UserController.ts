@@ -13,16 +13,14 @@ import {
 import UserModel, { UserDocument } from "../models/User";
 import { Response as ExpressResponse } from "express";
 import { CRLUD } from "../types/Framework";
-import { CrudService } from "../services/CrudService";
+import crudFactory, { CrudService } from "../services/Crud";
 import { jsonWithStatus } from "../modules/expressInternal";
+import { Injectable } from "@decorators/di";
 
 @Controller("/users")
+@Injectable()
 export default class UserController implements CRLUD {
-  private readonly crudService: CrudService;
-
-  constructor() {
-    this.crudService = new CrudService().setModel(UserModel);
-  }
+  private readonly crudService: CrudService = crudFactory(UserModel);
 
   /**
    * List all users
@@ -56,6 +54,7 @@ export default class UserController implements CRLUD {
     @Body() body: UserDocument,
     @Response() res: ExpressResponse
   ): Promise<void> {
+    console.log(res);
     jsonWithStatus(res, await this.crudService.createUtil(body));
   }
 

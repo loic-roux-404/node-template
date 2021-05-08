@@ -1,7 +1,7 @@
 import { Model } from "mongoose";
 import isEmpty from "lodash/isEmpty";
 import pickBy from "lodash/pickBy";
-import { QueryReturn } from "../modules/expressInternal/index";
+import { QueryReturn } from "../../modules/expressInternal/index";
 import { Injectable } from "@decorators/di";
 
 interface QueryObject {
@@ -16,19 +16,17 @@ class CrudServiceError extends Error {}
 
 @Injectable()
 export class CrudService {
-  private Model?: Model<any>;
+  private readonly Model?: Model<any>;
 
-  setModel(model: Model<any>): this {
-    this.Model = model;
-
-    return this;
+  constructor(Model: Model<any>) {
+    this.Model = Model;
   }
 
   public async readUtil(
     query: QueryObject,
     queryOverride: QueryObject = {}
   ): Promise<QueryReturn> {
-    if (this.Model == null) throw CrudServiceError;
+    if (this.Model == null) throw new CrudServiceError();
     queryOverride = pickBy(queryOverride);
     const finalQuery = !isEmpty(queryOverride) ? queryOverride : query;
     const data = await this.Model.find(finalQuery);
@@ -40,7 +38,7 @@ export class CrudService {
   }
 
   public async createUtil(body: {}): Promise<QueryReturn> {
-    if (this.Model == null) throw CrudServiceError;
+    if (this.Model == null) throw new CrudServiceError();
     const data = (await this.Model.create(new this.Model(body))) ?? {};
     return {
       data,
@@ -49,7 +47,7 @@ export class CrudService {
   }
 
   public async createMulUtil(body: {}): Promise<QueryReturn> {
-    if (this.Model == null) throw CrudServiceError;
+    if (this.Model == null) throw new CrudServiceError();
 
     const data = await this.Model.insertMany(
       body instanceof Array ? body.map((e) => new Model(e)) : [new Model(body)]
@@ -61,7 +59,7 @@ export class CrudService {
     };
   }
 
-  async updateUtil(query: QueryObject, body: {}): Promise<QueryReturn> {
+  public async updateUtil(query: QueryObject, body: {}): Promise<QueryReturn> {
     if (this.Model == null) throw CrudServiceError;
 
     const data = await this.Model.updateOne(query, body).exec();
@@ -69,7 +67,7 @@ export class CrudService {
     return { data, status: this.updateStatus(data) };
   }
 
-  async deleteUtil(query: {}): Promise<QueryReturn> {
+  public async deleteUtil(query: {}): Promise<QueryReturn> {
     if (this.Model == null) throw CrudServiceError;
 
     query = pickBy(query);
@@ -98,5 +96,3 @@ export class CrudService {
     return data?.n != null && data.n > 0 ? statusOk : 404;
   }
 }
-
-export default { provide: CrudService.name, useClass: CrudService };

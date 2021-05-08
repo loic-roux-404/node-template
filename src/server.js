@@ -6,7 +6,7 @@ const { NODE_ENV, IP, PORT } = {
 };
 
 const serverOptions = {
-  timeout: 400,
+  timeout: 500,
 };
 
 /**
@@ -14,7 +14,7 @@ const serverOptions = {
  *
  * @param {Express} app
  */
-export default (app) => {
+export default async (app) => {
   const server = app.listen(PORT, IP, () => {
     console.info(`Running in ${NODE_ENV} environment`);
     console.info(`Server running at http://${IP}:${PORT}`);
