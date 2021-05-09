@@ -1,12 +1,20 @@
 import { Get, Response, Controller } from "@decorators/express";
+import { Container, Injectable } from "@decorators/di";
+import { Connection, STATES } from "mongoose";
 
 @Controller("/")
-export default class {
+@Injectable()
+export default class MainController {
   @Get("")
-  async list(@Response() res: any): Promise<void> {
+  async home(@Response() res: any): Promise<void> {
     res.json({
       title: "Home",
-      content: "Attttttend",
     });
+  }
+
+  @Get("/supervision")
+  async supervision(@Response() res: any): Promise<void> {
+    const db = Container.get<Connection>("db");
+    res.json({ dbstatus: STATES[db.readyState] });
   }
 }

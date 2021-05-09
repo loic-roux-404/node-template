@@ -23,6 +23,7 @@ export default () => {
         serverSelectionTimeoutMS: 1000,
       }
     );
+    return mongoose.connection;
   } catch (e) {
     console.error("Database error", e);
     throw e;

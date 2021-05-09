@@ -1,4 +1,3 @@
-import mongoInit from "./database.js";
 import UsersController from "../controllers/UserController";
 import MainController from "../controllers/MainController";
 import ProductController from "../controllers/HotelController";
@@ -12,4 +11,4 @@ const controllers = [
   RoomController,
 ];
 
-export { mongoInit, controllers, containerInit };
+export { containerInit, controllers };

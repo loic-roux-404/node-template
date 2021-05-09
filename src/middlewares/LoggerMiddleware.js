@@ -14,7 +14,7 @@ morgan.token("error", function getError({ error }) {
   if (!error) return "Unknown Error";
   if (process.env.NODE_ENV !== "production")
     console.error(error.constructor, error);
-  return `Error: ${error.toString()} ${error.stack?.toString() || ""}`;
+  return `Error: ${error.toString()} ${JSON.stringify(error.stack) || ""}`;
 });
 
 morgan.format(

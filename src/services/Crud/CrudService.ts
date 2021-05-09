@@ -22,7 +22,7 @@ export class CrudService {
     this.Model = Model;
   }
 
-  public async readUtil(
+  public async read(
     query: QueryObject,
     queryOverride: QueryObject = {}
   ): Promise<QueryReturn> {
@@ -37,7 +37,7 @@ export class CrudService {
     };
   }
 
-  public async createUtil(body: {}): Promise<QueryReturn> {
+  public async create(body: {}): Promise<QueryReturn> {
     if (this.Model == null) throw new CrudServiceError();
     const data = (await this.Model.create(new this.Model(body))) ?? {};
     return {
@@ -46,7 +46,7 @@ export class CrudService {
     };
   }
 
-  public async createMulUtil(body: {}): Promise<QueryReturn> {
+  public async batchCreate(body: {}): Promise<QueryReturn> {
     if (this.Model == null) throw new CrudServiceError();
 
     const data = await this.Model.insertMany(
@@ -59,7 +59,7 @@ export class CrudService {
     };
   }
 
-  public async updateUtil(query: QueryObject, body: {}): Promise<QueryReturn> {
+  public async update(query: QueryObject, body: {}): Promise<QueryReturn> {
     if (this.Model == null) throw CrudServiceError;
 
     const data = await this.Model.updateOne(query, body).exec();
@@ -67,7 +67,7 @@ export class CrudService {
     return { data, status: this.updateStatus(data) };
   }
 
-  public async deleteUtil(query: {}): Promise<QueryReturn> {
+  public async delete(query: {}): Promise<QueryReturn> {
     if (this.Model == null) throw CrudServiceError;
 
     query = pickBy(query);

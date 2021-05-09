@@ -1,4 +1,4 @@
-import { controllers, mongoInit, containerInit } from "./config/index.js";
+import { controllers, containerInit } from "./config/index.js";
 import express from "express";
 import { attachControllers } from "@decorators/express";
 import {
@@ -11,7 +11,6 @@ import server from "./server";
 const app = express();
 
 // Scaffold app
-mongoInit();
 containerInit();
 // Classic middlewares
 app.use(bodyParser.json());

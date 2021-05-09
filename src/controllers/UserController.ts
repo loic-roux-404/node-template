@@ -32,7 +32,7 @@ export default class UserController implements CRLUD {
     @Params("name") name: string | undefined,
     @Response() res: any
   ): Promise<void> {
-    jsonWithStatus(res, await this.crudService.readUtil(query, { name }));
+    jsonWithStatus(res, await this.crudService.read(query, { name }));
   }
 
   /**
@@ -55,7 +55,7 @@ export default class UserController implements CRLUD {
     @Response() res: ExpressResponse
   ): Promise<void> {
     console.log(res);
-    jsonWithStatus(res, await this.crudService.createUtil(body));
+    jsonWithStatus(res, await this.crudService.create(body));
   }
 
   /**
@@ -67,7 +67,7 @@ export default class UserController implements CRLUD {
     @Response() res: ExpressResponse,
     @Params("name") name: string
   ): Promise<void> {
-    jsonWithStatus(res, await this.crudService.updateUtil({ name }, body));
+    jsonWithStatus(res, await this.crudService.update({ name }, body));
   }
 
   /**
@@ -78,7 +78,7 @@ export default class UserController implements CRLUD {
     @Body() body: UserDocument[] | UserDocument,
     @Response() res: ExpressResponse
   ): Promise<void> {
-    jsonWithStatus(res, await this.crudService.createMulUtil(body));
+    jsonWithStatus(res, await this.crudService.batchCreate(body));
   }
 
   /**
@@ -90,6 +90,6 @@ export default class UserController implements CRLUD {
     @Response() res: ExpressResponse,
     @Params("name") name: string
   ): Promise<void> {
-    jsonWithStatus(res, await this.crudService.deleteUtil({ ...query, name }));
+    jsonWithStatus(res, await this.crudService.delete({ ...query, name }));
   }
 }

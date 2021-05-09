@@ -15,7 +15,7 @@ import HotelModel, { HotelDocument } from "../models/Hotel";
 import { CRLUD } from "../types/Framework";
 import crudFactory, { CrudService } from "../services/Crud";
 import { Injectable } from "@decorators/di";
-import { jsonWithStatus } from "../modules/expressInternal/index";
+import { jsonWithStatus } from "../modules/expressInternal";
 
 @Controller("/hotels")
 @Injectable()
@@ -28,7 +28,7 @@ export default class HotelController implements CRLUD {
     @Params("name") name: string | undefined,
     @Response() res: ExpressResponse
   ): Promise<void> {
-    jsonWithStatus(res, await this.crudService.readUtil(query, { name }));
+    jsonWithStatus(res, await this.crudService.read(query, { name }));
   }
 
   @Put("/")
@@ -36,7 +36,7 @@ export default class HotelController implements CRLUD {
     @Body() body: HotelDocument,
     @Response() res: ExpressResponse
   ): Promise<void> {
-    jsonWithStatus(res, await this.crudService.createUtil(body));
+    jsonWithStatus(res, await this.crudService.create(body));
   }
 
   @Get("/")
@@ -53,7 +53,7 @@ export default class HotelController implements CRLUD {
     @Response() res: ExpressResponse,
     @Params("_id") _id: string
   ): Promise<void> {
-    jsonWithStatus(res, await this.crudService.updateUtil({ _id }, body));
+    jsonWithStatus(res, await this.crudService.update({ _id }, body));
   }
 
   @Post("/")
@@ -61,7 +61,7 @@ export default class HotelController implements CRLUD {
     @Body() body: HotelDocument | HotelDocument[],
     @Response() res: ExpressResponse
   ): Promise<void> {
-    jsonWithStatus(res, await this.crudService.createMulUtil(body));
+    jsonWithStatus(res, await this.crudService.batchCreate(body));
   }
 
   @Delete("/")
@@ -70,6 +70,6 @@ export default class HotelController implements CRLUD {
     @Response() res: ExpressResponse,
     @Params("_id") _id: string
   ): Promise<void> {
-    jsonWithStatus(res, await this.crudService.deleteUtil({ ...query, _id }));
+    jsonWithStatus(res, await this.crudService.delete({ ...query, _id }));
   }
 }
