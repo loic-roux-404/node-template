@@ -12,14 +12,20 @@ interface DataIn {
   _id?: string;
 }
 
-class CrudServiceError extends Error {}
+class CrudServiceError extends Error { }
 
 @Injectable()
 export class CrudService {
-  private readonly Model?: Model<any>;
+  private Model?: Model<any>;
 
-  constructor(Model: Model<any>) {
+  constructor(Model?: Model<any>) {
     this.Model = Model;
+  }
+
+  public setModel(Model: Model<any>): CrudService {
+    this.Model = Model;
+
+    return this;
   }
 
   public async read(

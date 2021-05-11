@@ -13,14 +13,14 @@ import {
 import { Response as ExpressResponse } from "express";
 import HotelModel, { HotelDocument } from "../models/Hotel";
 import { CRLUD } from "../types/Framework";
-import crudFactory, { CrudService } from "../services/Crud";
+import { CrudService } from "../services/Crud";
 import { Injectable } from "@decorators/di";
 import { jsonWithStatus } from "../modules/expressInternal";
 
 @Controller("/hotels")
 @Injectable()
 export default class HotelController implements CRLUD {
-  private readonly crudService: CrudService = crudFactory(HotelModel);
+  private readonly crudService: CrudService = new CrudService(HotelModel);
 
   @Get("/:name")
   async read(

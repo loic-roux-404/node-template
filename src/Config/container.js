@@ -3,12 +3,9 @@ import { Container } from "@decorators/di";
 import ServerMiddlewareProvider from "../middlewares/ServerErrorMiddleware";
 import variableProvide from "../modules/variableProvideToContainer";
 import Globals from "./globals";
-import { CrudFactoryProvider } from "../services/Crud";
 import dbConnect from "./database";
 
 const middlewares = [ServerMiddlewareProvider];
-
-const factories = [CrudFactoryProvider];
 
 const services = [
   // Database connection as service
@@ -16,9 +13,4 @@ const services = [
 ];
 
 export default () =>
-  Container.provide([
-    ...variableProvide(Globals),
-    ...services,
-    ...factories,
-    ...middlewares,
-  ]);
+  Container.provide([...variableProvide(Globals), ...services, ...middlewares]);

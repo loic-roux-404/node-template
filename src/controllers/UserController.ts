@@ -3,7 +3,6 @@ import {
   Params,
   Controller,
   Get,
-  Post,
   Query,
   Put,
   Body,
@@ -13,14 +12,14 @@ import {
 import UserModel, { UserDocument } from "../models/User";
 import { Response as ExpressResponse } from "express";
 import { CRLUD } from "../types/Framework";
-import crudFactory, { CrudService } from "../services/Crud";
+import { CrudService } from "../services/Crud";
 import { jsonWithStatus } from "../modules/expressInternal";
 import { Injectable } from "@decorators/di";
 
 @Controller("/users")
 @Injectable()
 export default class UserController implements CRLUD {
-  private readonly crudService: CrudService = crudFactory(UserModel);
+  private readonly crudService: CrudService = new CrudService(UserModel);
 
   /**
    * List all users
@@ -54,7 +53,6 @@ export default class UserController implements CRLUD {
     @Body() body: UserDocument,
     @Response() res: ExpressResponse
   ): Promise<void> {
-    console.log(res);
     jsonWithStatus(res, await this.crudService.create(body));
   }
 
@@ -68,17 +66,6 @@ export default class UserController implements CRLUD {
     @Params("name") name: string
   ): Promise<void> {
     jsonWithStatus(res, await this.crudService.update({ name }, body));
-  }
-
-  /**
-   * Flexible create, for a list of objects or a single one
-   */
-  @Post("/")
-  async batchCreate(
-    @Body() body: UserDocument[] | UserDocument,
-    @Response() res: ExpressResponse
-  ): Promise<void> {
-    jsonWithStatus(res, await this.crudService.batchCreate(body));
   }
 
   /**
