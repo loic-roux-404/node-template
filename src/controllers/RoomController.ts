@@ -13,9 +13,10 @@ import {
 import { Response as ExpressResponse } from "express";
 import RoomModel, { RoomDocument } from "../models/Room";
 import { CRLUD } from "../types/Framework";
-import { CrudService } from "../services/Crud";
+import { CrudService } from "../services/CrudService";
 import { Injectable } from "@decorators/di";
-import { jsonWithStatus } from "../modules/expressInternal/index";
+import { jsonWithStatus } from "../modules/expressInternal";
+import { FilterQuery } from "mongoose";
 
 @Controller("/rooms")
 @Injectable()
@@ -24,9 +25,9 @@ export default class RoomController implements CRLUD {
 
   @Get("/:_id")
   async read(
-    @Query() query: RoomDocument | {},
-    @Params("_id") _id: string | undefined,
-    @Response() res: ExpressResponse
+    @Query() query: FilterQuery<RoomDocument>,
+    @Response() res: ExpressResponse,
+    @Params("_id") _id: string | undefined
   ): Promise<void> {
     jsonWithStatus(res, await this.crudService.read(query, { _id }));
   }
@@ -41,10 +42,10 @@ export default class RoomController implements CRLUD {
 
   @Get("/")
   async list(
-    @Query() query: {} | RoomDocument,
+    @Query() query: FilterQuery<RoomDocument>,
     @Response() res: ExpressResponse
   ): Promise<void> {
-    await this.read(query ?? {}, undefined, res);
+    await this.read(query ?? {}, res, undefined);
   }
 
   @Patch("/:_id")
@@ -61,12 +62,12 @@ export default class RoomController implements CRLUD {
     @Body() body: RoomDocument | RoomDocument[],
     @Response() res: ExpressResponse
   ): Promise<void> {
-    jsonWithStatus(res, await this.crudService.batchCreate(body));
+    jsonWithStatus(res, await this.crudService.create(body));
   }
 
   @Delete("/:_id")
   async delete(
-    @Query() query: RoomDocument,
+    @Query() query: FilterQuery<RoomDocument>,
     @Response() res: ExpressResponse,
     @Params("_id") _id: string
   ): Promise<void> {

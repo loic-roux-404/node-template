@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/method-signature-style */
-import { Document } from "mongoose";
+import { Document, FilterQuery } from "mongoose";
 import { Response as ExpressResponse } from "express";
 
 /**
@@ -9,37 +9,39 @@ export interface CRLUD {
   /**
    * @example @Put("/") read() {}
    */
-  create(body: Document, res: ExpressResponse): Promise<void>;
-
-  /**
-   * Optional method to create a batch of entities
-   *
-   * @example @Post('/') createListOrSingle() {}
-   */
-  batchCreate?(
-    body: Document[] | Document,
-    res: ExpressResponse
-  ): Promise<void>;
+  create(body: Document | Document[], res: ExpressResponse): Promise<void>;
 
   /**
    * @example @Get("/:name") read() {}
    */
-  read(query: Document | {}, name: string | undefined, res: any): Promise<void>;
+  read(
+    query: FilterQuery<Document>,
+    res: ExpressResponse,
+    primaryFilter: string | undefined
+  ): Promise<void>;
 
   /**
    * @example @Get("/") list() {
    *   this.read(...arguments)
    * }
    */
-  list(query: Document | {}, res: ExpressResponse): Promise<void>;
+  list(query: FilterQuery<Document>, res: ExpressResponse): Promise<void>;
 
   /**
    * @example @Patch('/:name') update() {}
    */
-  update(body: Document, res: ExpressResponse, name: string): Promise<void>;
+  update(
+    body: Document,
+    res: ExpressResponse,
+    primaryFilter: string
+  ): Promise<void>;
 
   /**
    * @example @Delete('/') delete() {}
    */
-  delete(body: Document, res: ExpressResponse, name: string): Promise<void>;
+  delete(
+    query: FilterQuery<Document>,
+    res: ExpressResponse,
+    primaryFilter: string
+  ): Promise<void>;
 }

@@ -1,4 +1,5 @@
-import { Document, Schema, Model, model } from "mongoose";
+import { Document, Schema, Model, model, Types } from "mongoose";
+import { HotelDocument } from "./Hotel";
 
 const RoomSchema: Schema<RoomDocument, RoomBaseModel> = new Schema<
   RoomDocument,
@@ -6,7 +7,7 @@ const RoomSchema: Schema<RoomDocument, RoomBaseModel> = new Schema<
 >({
   name: {
     type: String,
-    required: true,
+    required: false,
   },
   capacity: {
     type: Number,
@@ -14,6 +15,11 @@ const RoomSchema: Schema<RoomDocument, RoomBaseModel> = new Schema<
   },
   price: {
     type: Number,
+    required: true,
+  },
+  hotel: {
+    type: Types.ObjectId,
+    ref: "Hotel",
     required: true,
   },
 });
@@ -24,8 +30,10 @@ interface Room {
   price: number;
 }
 
-export interface RoomDocument extends Room, Document {}
+export interface RoomDocument extends Room, Document {
+  hotel: HotelDocument["_id"];
+}
 
-export interface RoomBaseModel extends Model<RoomDocument> {}
+export interface RoomBaseModel extends Model<RoomDocument> { }
 
 export default model<RoomDocument, RoomBaseModel>("Room", RoomSchema);

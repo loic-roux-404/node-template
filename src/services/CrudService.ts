@@ -1,40 +1,36 @@
-import { Model } from "mongoose";
+import { Model, Document, FilterQuery } from "mongoose";
 import isEmpty from "lodash/isEmpty";
 import pickBy from "lodash/pickBy";
-import { QueryReturn } from "../../modules/expressInternal/index";
+import { QueryReturn } from "../modules/expressInternal/index";
 import { Injectable } from "@decorators/di";
-
-interface QueryObject {
-  [key: string]: any;
-}
 
 interface DataIn {
   _id?: string;
 }
 
-class CrudServiceError extends Error { }
+class CrudServiceError extends Error {
+  constructor(message: string = "Crud service Error") {
+    super(message);
+  }
+}
+
+class UndefinedModelError extends CrudServiceError {}
 
 @Injectable()
 export class CrudService {
-  private Model?: Model<any>;
+  private readonly Model: Model<any>;
 
-  constructor(Model?: Model<any>) {
+  constructor(Model: Model<any>) {
     this.Model = Model;
-  }
-
-  public setModel(Model: Model<any>): CrudService {
-    this.Model = Model;
-
-    return this;
   }
 
   public async read(
-    query: QueryObject,
-    queryOverride: QueryObject = {}
+    query: FilterQuery<Document>,
+    primaryQuery: FilterQuery<Document> = {}
   ): Promise<QueryReturn> {
-    if (this.Model == null) throw new CrudServiceError();
-    queryOverride = pickBy(queryOverride);
-    const finalQuery = !isEmpty(queryOverride) ? queryOverride : query;
+    if (this.Model == null) throw new UndefinedModelError();
+    primaryQuery = pickBy(primaryQuery);
+    const finalQuery = !isEmpty(primaryQuery) ? primaryQuery : query;
     const data = await this.Model.find(finalQuery);
 
     return {
@@ -43,20 +39,13 @@ export class CrudService {
     };
   }
 
-  public async create(body: {}): Promise<QueryReturn> {
-    if (this.Model == null) throw new CrudServiceError();
-    const data = (await this.Model.create(new this.Model(body))) ?? {};
-    return {
-      data,
-      status: this.createStatus(data),
-    };
-  }
-
-  public async batchCreate(body: {}): Promise<QueryReturn> {
-    if (this.Model == null) throw new CrudServiceError();
+  public async create(body: Document | Document[]): Promise<QueryReturn> {
+    if (this.Model == null) throw new UndefinedModelError();
 
     const data = await this.Model.insertMany(
-      body instanceof Array ? body.map((e) => new Model(e)) : [new Model(body)]
+      body instanceof Array
+        ? body.map((e) => new this.Model(e))
+        : [new this.Model(body)]
     );
 
     return {
@@ -65,16 +54,19 @@ export class CrudService {
     };
   }
 
-  public async update(query: QueryObject, body: {}): Promise<QueryReturn> {
-    if (this.Model == null) throw CrudServiceError;
+  public async update(
+    query: FilterQuery<Document>,
+    body: Document
+  ): Promise<QueryReturn> {
+    if (this.Model == null) throw UndefinedModelError;
 
     const data = await this.Model.updateOne(query, body).exec();
 
     return { data, status: this.updateStatus(data) };
   }
 
-  public async delete(query: {}): Promise<QueryReturn> {
-    if (this.Model == null) throw CrudServiceError;
+  public async delete(query: FilterQuery<Document>): Promise<QueryReturn> {
+    if (this.Model == null) throw UndefinedModelError;
 
     query = pickBy(query);
     const data = await this.Model.deleteMany(query).exec();

@@ -12,9 +12,10 @@ import {
 import UserModel, { UserDocument } from "../models/User";
 import { Response as ExpressResponse } from "express";
 import { CRLUD } from "../types/Framework";
-import { CrudService } from "../services/Crud";
+import { CrudService } from "../services/CrudService";
 import { jsonWithStatus } from "../modules/expressInternal";
 import { Injectable } from "@decorators/di";
+import { FilterQuery } from "mongoose";
 
 @Controller("/users")
 @Injectable()
@@ -27,9 +28,9 @@ export default class UserController implements CRLUD {
    */
   @Get("/:name")
   async read(
-    @Query() query: UserDocument | {},
-    @Params("name") name: string | undefined,
-    @Response() res: any
+    @Query() query: FilterQuery<UserDocument>,
+    @Response() res: any,
+    @Params("name") name: string | undefined
   ): Promise<void> {
     jsonWithStatus(res, await this.crudService.read(query, { name }));
   }
@@ -39,10 +40,10 @@ export default class UserController implements CRLUD {
    */
   @Get("/")
   async list(
-    @Query() query: UserDocument | {},
+    @Query() query: FilterQuery<UserDocument>,
     @Response() res: ExpressResponse
   ): Promise<void> {
-    await this.read(query ?? {}, undefined, res);
+    await this.read(query ?? {}, res, undefined);
   }
 
   /**
@@ -73,7 +74,7 @@ export default class UserController implements CRLUD {
    */
   @Delete("/:name")
   async delete(
-    @Query() query: UserDocument,
+    @Query() query: FilterQuery<UserDocument>,
     @Response() res: ExpressResponse,
     @Params("name") name: string
   ): Promise<void> {
