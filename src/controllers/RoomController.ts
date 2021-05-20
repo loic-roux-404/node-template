@@ -17,8 +17,9 @@ import { CrudService } from "../services/CrudService";
 import { Injectable } from "@decorators/di";
 import { jsonWithStatus } from "../modules/expressInternal";
 import { FilterQuery } from "mongoose";
+import { PassportMiddleware } from "../modules/oauth/middlewares/PassportMiddleware";
 
-@Controller("/rooms")
+@Controller("/rooms", [PassportMiddleware])
 @Injectable()
 export default class RoomController implements CRLUD {
   private readonly crudService: CrudService = new CrudService(RoomModel);

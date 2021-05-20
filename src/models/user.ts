@@ -17,10 +17,10 @@ const UserSchema: Schema<UserDocument, UserModel> = new Schema<
     required: true,
     lowercase: true,
   },
-  // password: {
-  //   type: String,
-  //   required: true,
-  // },
+  token: {
+    type: String,
+    required: true,
+  },
   currentHotel: {
     type: Types.ObjectId,
     ref: "Hotel",
@@ -32,7 +32,7 @@ interface User {
   firstName: string;
   lastName?: string;
   name: string;
-  // password: string;
+  token: string;
 }
 
 export interface UserDocument extends User, Document {
@@ -60,9 +60,9 @@ UserSchema.virtual("fullName").get(function (this: UserDocument) {
 
 // Document middlewares
 UserSchema.pre<UserDocument>("save", function (_) {
-  // if (this.isModified("password")) {
-  // this.password = this.password; // hashPassword(this.password)
-  // }
+  if (this.isModified("token")) {
+    this.token = this.token.trim();
+  }
 });
 
 // Default export

@@ -1,20 +1,19 @@
 import { Model, Document, FilterQuery } from "mongoose";
 import isEmpty from "lodash/isEmpty";
 import pickBy from "lodash/pickBy";
-import { QueryReturn } from "../modules/expressInternal/index";
+import { QueryReturn } from "../modules/expressInternal";
 import { Injectable } from "@decorators/di";
 
 interface DataIn {
   _id?: string;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 class CrudServiceError extends Error {
   constructor(message: string = "Crud service Error") {
     super(message);
   }
 }
-
-class UndefinedModelError extends CrudServiceError {}
 
 @Injectable()
 export class CrudService {
@@ -28,7 +27,6 @@ export class CrudService {
     query: FilterQuery<Document>,
     primaryQuery: FilterQuery<Document> = {}
   ): Promise<QueryReturn> {
-    if (this.Model == null) throw new UndefinedModelError();
     primaryQuery = pickBy(primaryQuery);
     const finalQuery = !isEmpty(primaryQuery) ? primaryQuery : query;
     const data = await this.Model.find(finalQuery);
@@ -40,8 +38,6 @@ export class CrudService {
   }
 
   public async create(body: Document | Document[]): Promise<QueryReturn> {
-    if (this.Model == null) throw new UndefinedModelError();
-
     const data = await this.Model.insertMany(
       body instanceof Array
         ? body.map((e) => new this.Model(e))
@@ -58,16 +54,12 @@ export class CrudService {
     query: FilterQuery<Document>,
     body: Document
   ): Promise<QueryReturn> {
-    if (this.Model == null) throw UndefinedModelError;
-
     const data = await this.Model.updateOne(query, body).exec();
 
     return { data, status: this.updateStatus(data) };
   }
 
   public async delete(query: FilterQuery<Document>): Promise<QueryReturn> {
-    if (this.Model == null) throw UndefinedModelError;
-
     query = pickBy(query);
     const data = await this.Model.deleteMany(query).exec();
 
@@ -86,8 +78,8 @@ export class CrudService {
     }
   }
 
-  protected createStatus(data: DataIn, statusOk = 201): number {
-    return data?._id != null ? statusOk : 400;
+  protected createStatus(data: DataIn[], statusOk = 201): number {
+    return data.length > 0 && data[0]?._id != null ? statusOk : 400;
   }
 
   protected updateStatus(data: { n?: number }, statusOk = 201): number {

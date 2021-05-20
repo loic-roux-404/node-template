@@ -1,5 +1,5 @@
 import { Document, Schema, Model, model, Types } from "mongoose";
-import { RoomDocument } from "./Room";
+import RoomModel, { RoomDocument } from "./Room";
 
 const HotelSchema: Schema<HotelDocument, HotelBaseModel> = new Schema<
   HotelDocument,
@@ -48,14 +48,29 @@ export interface HotelDocument extends Hotel, Document {
   rooms?: [RoomDocument["_id"]];
 }
 
-export interface HotelBaseModel extends Model<HotelDocument> { }
+export interface HotelBaseModel extends Model<HotelDocument> {}
 
-// Static methods
-HotelSchema.statics.findRooms = async function (
-  this: Model<HotelDocument>,
-  id: string
-): Promise<HotelDocument | null> {
-  return await this.findById(id).populate("rooms").exec();
-};
+// eslint-disable-next-line @typescript-eslint/no-misused-promises
+HotelSchema.pre("save", async function (next): Promise<void> {
+  if (this.rooms == null) {
+    next();
+    return;
+  }
+
+  for (const room of this.rooms) {
+    await RoomModel.findOneAndUpdate(room, { hotel: this._id });
+  }
+
+  next();
+});
+
+// eslint-disable-next-line @typescript-eslint/no-misused-promises
+HotelSchema.post("deleteMany", async function (docs): Promise<void> {
+  await RoomModel.deleteMany({
+    hotel: {
+      $in: docs.map((doc: Document) => doc._id),
+    },
+  });
+});
 
 export default model<HotelDocument, HotelBaseModel>("Hotel", HotelSchema);

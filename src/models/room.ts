@@ -34,6 +34,6 @@ export interface RoomDocument extends Room, Document {
   hotel: HotelDocument["_id"];
 }
 
-export interface RoomBaseModel extends Model<RoomDocument> { }
+export interface RoomBaseModel extends Model<RoomDocument> {}
 
 export default model<RoomDocument, RoomBaseModel>("Room", RoomSchema);

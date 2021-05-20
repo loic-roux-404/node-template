@@ -1,16 +1,18 @@
 import { Container } from "@decorators/di";
 // providers
-import ServerMiddlewareProvider from "../middlewares/ServerErrorMiddleware";
-import variableProvide from "../modules/variableProvideToContainer";
+import ServerErrorMiddlewareProvider from "../middlewares/ServerErrorMiddleware";
+import variableProvide from "../modules/framework/variableProvideToContainer";
 import Globals from "./globals";
-import dbConnect from "./database";
+import db from "./database";
 
-const middlewares = [ServerMiddlewareProvider];
+// Service which need manual instanciation
+// Other service in services/ use the decorator
+let services = [];
 
-const services = [
-  // Database connection as service
-  ...variableProvide({ db: dbConnect() }),
-];
+const middlewares = [ServerErrorMiddlewareProvider];
 
-export default () =>
+export default async () => {
+  // Build full services
+  services = [...services, ...variableProvide({ db: await db })];
   Container.provide([...variableProvide(Globals), ...services, ...middlewares]);
+};
