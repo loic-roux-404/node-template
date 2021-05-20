@@ -24,4 +24,4 @@ export interface ClientDocument extends Client, Document {}
 export interface ClientModel extends Model<ClientDocument> {}
 
 // Default export
-export default model<ClientDocument, ClientModel>("ApiClient", ClientSchema);
+export default model<ClientDocument, ClientModel>("Client", ClientSchema);

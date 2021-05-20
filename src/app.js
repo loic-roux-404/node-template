@@ -7,27 +7,22 @@ import {
 } from "./middlewares/LoggerMiddleware";
 import bodyParser from "body-parser";
 import server from "./server";
-import { oidc, passportPromise } from "./modules/oauth";
+import oauth from "./modules/oauth";
 
 const app = express();
 
 (async () => {
-  // Authentication part
-  app.enable("trust proxy");
-  app.use("/auth", oidc.callback());
-  // App part
-  app.use(bodyParser.json());
-  app.use(bodyParser.urlencoded({ extended: true }));
-  // Classic middlewares
+  // Logger middlewares
   app.use(LoggerMiddleware);
   app.use(LoggerErrorMiddleware);
 
   server(app);
-  // Passport authenticator init
-  const passport = await passportPromise;
-  app.use(passport.initialize());
-
+  // Auth
+  const auth = await oauth(app);
+  // Essential api middlewares
+  app.use(bodyParser.json());
+  app.use(bodyParser.urlencoded({ extended: true }));
   // Scaffold framework
-  await containerInit();
+  containerInit({ auth });
   attachControllers(app, controllers);
 })();

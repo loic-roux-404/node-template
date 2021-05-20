@@ -1,4 +1,3 @@
-import oidc from "./server/oidc";
-import passportPromise from "./client";
+import oauthServer from "./server";
 
-export { oidc, passportPromise };
+export default oauthServer;

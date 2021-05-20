@@ -31,7 +31,7 @@ export default async function (
         useUnifiedTopology: true,
         useFindAndModify: false,
         useCreateIndex: true,
-        serverSelectionTimeoutMS: 4500,
+        serverSelectionTimeoutMS: 4000,
         ...options,
       }
     );

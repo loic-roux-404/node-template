@@ -3,19 +3,19 @@ import { OPEN_ID_ISSUER } from "../model/config";
 import passport from "passport";
 import parseFromEnv from "./parseFromEnv";
 
-/**
- * @param {Express} app
- *
- * @returns {any}
- */
-export default (async () => {
+export const getClient = async function () {
   const issuer = await Issuer.discover(OPEN_ID_ISSUER);
   const client = new issuer.Client(parseFromEnv());
 
+  return client;
+};
+
+export const getPassport = async function () {
+  const client = await getClient();
+
   passport.use(
     "oidc",
-    new Strategy({ client }, (tokenSet, userinfo, done) => {
-      console.log(userinfo);
+    new Strategy({ client }, (tokenSet, _, done) => {
       done(null, tokenSet.claims());
     })
   );
@@ -29,4 +29,4 @@ export default (async () => {
   });
 
   return passport;
-})();
+};

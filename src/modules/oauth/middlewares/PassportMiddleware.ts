@@ -2,19 +2,31 @@ import { NextFunction, Response, Request } from "express";
 import { Middleware } from "@decorators/express";
 import AuthenticationError from "../errors/AuthenticationError";
 import MissingTokenError from "../errors/MissingTokenError";
+import { Injectable, Container } from "@decorators/di";
+import { Client } from "openid-client";
 
+@Injectable()
 export class PassportMiddleware implements Middleware {
   public async use(
-    request: Request & { isAuthenticated: () => boolean },
-    response: Response,
+    request: Request,
+    _: Response,
     next: NextFunction
   ): Promise<void> {
-    if (request.isAuthenticated()) {
-      next();
-    } else if (request.get("authorization") == null) {
+    const authorization = request.get("authorization");
+
+    if (authorization == null) {
       next(new MissingTokenError());
-    } else {
+      return;
+    }
+
+    const token = authorization.split("Bearer")[1].trim() ?? null;
+    if (
+      token == null &&
+      !(await Container.get<Client>("auth").introspect(token)).active
+    ) {
       next(new AuthenticationError());
     }
+
+    next();
   }
 }
