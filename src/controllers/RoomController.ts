@@ -17,10 +17,10 @@ import { CrudService } from "../services/CrudService";
 import { Injectable } from "@decorators/di";
 import { jsonWithStatus } from "../modules/expressInternal";
 import { FilterQuery } from "mongoose";
-import { PassportMiddleware } from "../modules/oauth/middlewares/PassportMiddleware";
+import { TokenProtectedMiddleware } from "../modules/oauth/middlewares/PassportMiddleware";
 
 @Injectable()
-@Controller("/rooms", [PassportMiddleware])
+@Controller("/rooms", [TokenProtectedMiddleware])
 export default class RoomController implements CRLUD {
   private readonly crudService: CrudService = new CrudService(RoomModel);
 

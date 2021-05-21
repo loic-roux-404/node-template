@@ -1,5 +1,6 @@
 import { Document, Schema, Model, model, Types } from "mongoose";
 import { HotelDocument } from "./Hotel";
+import autopopulate from "mongoose-autopopulate"
 
 const RoomSchema: Schema<RoomDocument, RoomBaseModel> = new Schema<
   RoomDocument,
@@ -35,5 +36,7 @@ export interface RoomDocument extends Room, Document {
 }
 
 export interface RoomBaseModel extends Model<RoomDocument> {}
+
+RoomSchema.plugin(autopopulate);
 
 export default model<RoomDocument, RoomBaseModel>("Room", RoomSchema);

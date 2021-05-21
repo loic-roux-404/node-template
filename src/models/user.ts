@@ -1,5 +1,6 @@
 import { Document, Model, model, Types, Schema } from "mongoose";
-import { HotelDocument } from "./Hotel";
+import autopopulate from "mongoose-autopopulate"
+import { RoomDocument } from "./Room";
 
 // Schema
 const UserSchema: Schema<UserDocument, UserModel> = new Schema<
@@ -21,9 +22,9 @@ const UserSchema: Schema<UserDocument, UserModel> = new Schema<
     type: String,
     required: true,
   },
-  currentHotel: {
+  currentRoom: {
     type: Types.ObjectId,
-    ref: "Hotel",
+    ref: "Room",
     required: false,
   },
 });
@@ -37,33 +38,19 @@ interface User {
 
 export interface UserDocument extends User, Document {
   fullName: string;
-  currentHotel?: HotelDocument["_id"];
+  currentRoom?: RoomDocument["_id"];
 }
 
 // For model
 export interface UserModel extends Model<UserDocument> {
-  findHotel: (id: string) => Promise<UserDocument>;
+  findRoom: (id: string) => Promise<RoomDocument>;
 }
-
-// Static methods
-UserSchema.statics.findHotel = async function (
-  this: Model<UserDocument>,
-  id: string
-) {
-  return await this.findById(id).populate("hotel").exec();
-};
 
 // Virtuals
 UserSchema.virtual("fullName").get(function (this: UserDocument) {
   return `${this.firstName} ${this.lastName ?? ""}`;
 });
 
-// Document middlewares
-UserSchema.pre<UserDocument>("save", function (_) {
-  if (this.isModified("token")) {
-    this.token = this.token.trim();
-  }
-});
+UserSchema.plugin(autopopulate);
 
-// Default export
 export default model<UserDocument, UserModel>("User", UserSchema);

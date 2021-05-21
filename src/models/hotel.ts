@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import { Document, Schema, Model, model, Types } from "mongoose";
 import RoomModel, { RoomDocument } from "./Room";
+import autopopulate from "mongoose-autopopulate";
 
 const HotelSchema: Schema<HotelDocument, HotelBaseModel> = new Schema<
   HotelDocument,
@@ -32,6 +34,7 @@ const HotelSchema: Schema<HotelDocument, HotelBaseModel> = new Schema<
       type: Types.ObjectId,
       ref: "Room",
       required: false,
+      autopopulate: true,
     },
   ],
 });
@@ -50,7 +53,6 @@ export interface HotelDocument extends Hotel, Document {
 
 export interface HotelBaseModel extends Model<HotelDocument> {}
 
-// eslint-disable-next-line @typescript-eslint/no-misused-promises
 HotelSchema.pre("save", async function (next): Promise<void> {
   if (this.rooms == null) {
     next();
@@ -64,13 +66,17 @@ HotelSchema.pre("save", async function (next): Promise<void> {
   next();
 });
 
-// eslint-disable-next-line @typescript-eslint/no-misused-promises
-HotelSchema.post("deleteMany", async function (docs): Promise<void> {
-  await RoomModel.deleteMany({
-    hotel: {
-      $in: docs.map((doc: Document) => doc._id),
-    },
-  });
-});
+HotelSchema.post(
+  "deleteMany",
+  async function (docs: RoomDocument[]): Promise<void> {
+    await RoomModel.deleteMany({
+      hotel: {
+        $in: docs.map((doc: RoomDocument) => doc._id),
+      },
+    });
+  }
+);
+
+HotelSchema.plugin(autopopulate);
 
 export default model<HotelDocument, HotelBaseModel>("Hotel", HotelSchema);

@@ -6,14 +6,13 @@ import { Injectable, Container } from "@decorators/di";
 import { Client } from "openid-client";
 
 @Injectable()
-export class PassportMiddleware implements Middleware {
+export class TokenProtectedMiddleware implements Middleware {
   public async use(
     request: Request,
     _: Response,
     next: NextFunction
   ): Promise<void> {
     const authorization = request.get("authorization");
-
     if (authorization == null) {
       next(new MissingTokenError());
       return;

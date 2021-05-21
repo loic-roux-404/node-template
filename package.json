@@ -34,6 +34,7 @@
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "mongoose": "^5.12.1",
+    "mongoose-autopopulate": "^0.14.0",
     "morgan": "^1.10.0",
     "oidc-provider": "^7.3.2",
     "openid-client": "^4.7.3",

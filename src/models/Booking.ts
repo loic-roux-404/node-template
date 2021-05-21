@@ -45,8 +45,8 @@ interface Booking {
 bookingSchema.pre("save", async function (next): Promise<void> {
   let price = 0;
 
-  for (let i = 0; i < this.rooms.length; i++) {
-    const room = await RoomModel.findOne({ _id: this.rooms[i] }).exec();
+  for (const _id of this.rooms) {
+    const room = await RoomModel.findOne({ _id }).exec();
     if (room == null) continue;
     price += Number(room.price);
   }
