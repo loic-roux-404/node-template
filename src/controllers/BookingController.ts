@@ -6,35 +6,36 @@ import {
   Query,
   Put,
   Patch,
+  Post,
   Delete,
   Body,
 } from "@decorators/express";
 import { Response as ExpressResponse } from "express";
-import HotelModel, { HotelDocument } from "../models/Hotel";
 import { CRLUD } from "../types/Framework";
 import { CrudService } from "../modules/mongodb/services/CrudService";
 import { Injectable } from "@decorators/di";
 import { jsonWithStatus } from "../modules/expressInternal";
 import { FilterQuery } from "mongoose";
 import { TokenProtectedMiddleware } from "../modules/oauth/middlewares/PassportMiddleware";
+import BookingModel, { BookingDocument } from "../models/Booking";
 
 @Injectable()
-@Controller("/hotels", [TokenProtectedMiddleware])
-export default class HotelController implements CRLUD {
-  private readonly crudService: CrudService = new CrudService(HotelModel);
+@Controller("/booking", [TokenProtectedMiddleware])
+export default class BookingController implements CRLUD {
+  private readonly crudService: CrudService = new CrudService(BookingModel);
 
-  @Get("/:name")
+  @Get("/:_id")
   async read(
-    @Query() query: FilterQuery<HotelDocument>,
+    @Query() query: FilterQuery<BookingDocument>,
     @Response() res: ExpressResponse,
-    @Params("name") name: string | undefined
+    @Params("_id") _id: string | undefined
   ): Promise<void> {
-    jsonWithStatus(res, await this.crudService.read(query, { name }));
+    jsonWithStatus(res, await this.crudService.read(query, { _id }));
   }
 
   @Put("/")
   async create(
-    @Body() body: HotelDocument | HotelDocument[],
+    @Body() body: BookingDocument,
     @Response() res: ExpressResponse
   ): Promise<void> {
     jsonWithStatus(res, await this.crudService.create(body));
@@ -42,7 +43,7 @@ export default class HotelController implements CRLUD {
 
   @Get("/")
   async list(
-    @Query() query: FilterQuery<HotelDocument>,
+    @Query() query: FilterQuery<BookingDocument>,
     @Response() res: ExpressResponse
   ): Promise<void> {
     await this.read(query ?? {}, res, undefined);
@@ -50,16 +51,24 @@ export default class HotelController implements CRLUD {
 
   @Patch("/:_id")
   async update(
-    @Body() body: HotelDocument,
+    @Body() body: BookingDocument,
     @Response() res: ExpressResponse,
     @Params("_id") _id: string
   ): Promise<void> {
     jsonWithStatus(res, await this.crudService.update({ _id }, body));
   }
 
-  @Delete("/")
+  @Post("/")
+  async batchCreate(
+    @Body() body: BookingDocument | BookingDocument[],
+    @Response() res: ExpressResponse
+  ): Promise<void> {
+    jsonWithStatus(res, await this.crudService.create(body));
+  }
+
+  @Delete("/:_id")
   async delete(
-    @Query() query: FilterQuery<HotelDocument>,
+    @Query() query: FilterQuery<BookingDocument>,
     @Response() res: ExpressResponse,
     @Params("_id") _id: string
   ): Promise<void> {

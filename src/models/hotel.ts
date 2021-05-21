@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import { Document, Schema, Model, model, Types } from "mongoose";
+import { Document, Schema, Model, model } from "mongoose";
 import RoomModel, { RoomDocument } from "./Room";
 import autopopulate from "mongoose-autopopulate";
 
@@ -31,13 +31,15 @@ const HotelSchema: Schema<HotelDocument, HotelBaseModel> = new Schema<
   },
   rooms: [
     {
-      type: Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "Room",
       required: false,
       autopopulate: true,
     },
   ],
 });
+
+HotelSchema.plugin(autopopulate);
 
 interface Hotel {
   name: string;
@@ -54,13 +56,9 @@ export interface HotelDocument extends Hotel, Document {
 export interface HotelBaseModel extends Model<HotelDocument> {}
 
 HotelSchema.pre("save", async function (next): Promise<void> {
-  if (this.rooms == null) {
-    next();
+  if (this.rooms != null) {
+    console.warn("Room cannot be added from hotel");
     return;
-  }
-
-  for (const room of this.rooms) {
-    await RoomModel.findOneAndUpdate(room, { hotel: this._id });
   }
 
   next();
@@ -76,7 +74,5 @@ HotelSchema.post(
     });
   }
 );
-
-HotelSchema.plugin(autopopulate);
 
 export default model<HotelDocument, HotelBaseModel>("Hotel", HotelSchema);

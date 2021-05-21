@@ -9,6 +9,7 @@ errorMap.set(MongoError.name, 500);
 errorMap.set("BulkWriteError", 409);
 errorMap.set(MongooseError.DocumentNotFoundError.name, 404);
 errorMap.set(MongooseError.ValidationError.name, 400);
+errorMap.set("CastError", 400);
 errorMap.set(AuthenticationError.name, 403);
 
 export default errorMap;

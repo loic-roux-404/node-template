@@ -1,7 +1,7 @@
 import { Model, Document, FilterQuery } from "mongoose";
 import isEmpty from "lodash/isEmpty";
 import pickBy from "lodash/pickBy";
-import { QueryReturn } from "../modules/expressInternal";
+import { QueryReturn } from "../../expressInternal";
 import { Injectable } from "@decorators/di";
 
 interface DataIn {

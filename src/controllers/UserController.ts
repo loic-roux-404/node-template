@@ -12,7 +12,7 @@ import {
 import UserModel, { UserDocument } from "../models/User";
 import { Response as ExpressResponse } from "express";
 import { CRLUD } from "../types/Framework";
-import { CrudService } from "../services/CrudService";
+import { CrudService } from "../modules/mongodb/services/CrudService";
 import { jsonWithStatus } from "../modules/expressInternal";
 import { Injectable } from "@decorators/di";
 import { FilterQuery } from "mongoose";

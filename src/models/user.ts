@@ -1,4 +1,4 @@
-import { Document, Model, model, Types, Schema } from "mongoose";
+import { Document, Model, model, Schema } from "mongoose";
 import autopopulate from "mongoose-autopopulate"
 import { RoomDocument } from "./Room";
 
@@ -23,7 +23,7 @@ const UserSchema: Schema<UserDocument, UserModel> = new Schema<
     required: true,
   },
   currentRoom: {
-    type: Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: "Room",
     required: false,
   },

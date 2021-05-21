@@ -1,4 +1,4 @@
-import { Document, Schema, Model, model, Types } from "mongoose";
+import { Document, Schema, Model, model } from "mongoose";
 import RoomModel, { RoomDocument, RoomBaseModel } from "./Room";
 import moment from "moment";
 
@@ -11,7 +11,7 @@ const bookingSchema: Schema<BookingDocument, BookingBaseModel> = new Schema<
     required: true,
   },
   room: {
-    type: Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: "Room",
     required: true,
   },

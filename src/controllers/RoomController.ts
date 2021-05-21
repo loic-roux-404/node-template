@@ -13,7 +13,7 @@ import {
 import { Response as ExpressResponse } from "express";
 import RoomModel, { RoomDocument } from "../models/Room";
 import { CRLUD } from "../types/Framework";
-import { CrudService } from "../services/CrudService";
+import { CrudService } from "../modules/mongodb/services/CrudService";
 import { Injectable } from "@decorators/di";
 import { jsonWithStatus } from "../modules/expressInternal";
 import { FilterQuery } from "mongoose";
