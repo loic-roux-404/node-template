@@ -1,5 +1,4 @@
 import { Document, Model, model, Schema } from "mongoose";
-import autopopulate from "mongoose-autopopulate"
 import { RoomDocument } from "./Room";
 
 // Schema
@@ -50,7 +49,5 @@ export interface UserModel extends Model<UserDocument> {
 UserSchema.virtual("fullName").get(function (this: UserDocument) {
   return `${this.firstName} ${this.lastName ?? ""}`;
 });
-
-UserSchema.plugin(autopopulate);
 
 export default model<UserDocument, UserModel>("User", UserSchema);

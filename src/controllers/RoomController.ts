@@ -6,7 +6,6 @@ import {
   Query,
   Put,
   Patch,
-  Post,
   Delete,
   Body,
 } from "@decorators/express";
@@ -35,7 +34,7 @@ export default class RoomController implements CRLUD {
 
   @Put("/")
   async create(
-    @Body() body: RoomDocument,
+    @Body() body: RoomDocument | RoomDocument[],
     @Response() res: ExpressResponse
   ): Promise<void> {
     jsonWithStatus(res, await this.crudService.create(body));
@@ -56,14 +55,6 @@ export default class RoomController implements CRLUD {
     @Params("_id") _id: string
   ): Promise<void> {
     jsonWithStatus(res, await this.crudService.update({ _id }, body));
-  }
-
-  @Post("/")
-  async batchCreate(
-    @Body() body: RoomDocument | RoomDocument[],
-    @Response() res: ExpressResponse
-  ): Promise<void> {
-    jsonWithStatus(res, await this.crudService.create(body));
   }
 
   @Delete("/:_id")

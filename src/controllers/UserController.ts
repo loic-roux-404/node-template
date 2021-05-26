@@ -52,7 +52,7 @@ export default class UserController implements CRLUD {
    */
   @Put("/")
   async create(
-    @Body() body: UserDocument,
+    @Body() body: UserDocument | UserDocument[],
     @Response() res: ExpressResponse
   ): Promise<void> {
     jsonWithStatus(res, await this.crudService.create(body));

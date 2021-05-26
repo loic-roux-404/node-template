@@ -8,6 +8,10 @@ interface MongoEnv {
   MONGO_DB: string;
 }
 
+const config = {
+  ssl: "false",
+};
+
 /**
  * Connect to mongo
  */
@@ -22,10 +26,14 @@ export default async function (
   options: ConnectOptions
 ): Promise<Connection> {
   try {
+    const finalConfigUrlParams = new URLSearchParams({
+      ...config,
+      ...{ authSource: MONGO_USERNAME },
+    });
+
     await mongoose.connect(
-      `\
-      mongodb://${MONGO_PASSWORD}:${MONGO_USERNAME}@${MONGO_HOSTNAME}:${MONGO_PORT}\
-      /${MONGO_DB}?authSource=${MONGO_USERNAME}?ssl=false`,
+      `mongodb://${MONGO_PASSWORD}:${MONGO_USERNAME}@${MONGO_HOSTNAME}:${MONGO_PORT}/${MONGO_DB}?` +
+        finalConfigUrlParams.toString(),
       {
         useNewUrlParser: true,
         useUnifiedTopology: true,

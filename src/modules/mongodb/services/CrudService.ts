@@ -8,13 +8,6 @@ interface DataIn {
   _id?: string;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-class CrudServiceError extends Error {
-  constructor(message: string = "Crud service Error") {
-    super(message);
-  }
-}
-
 @Injectable()
 export class CrudService {
   private readonly Model: Model<any>;

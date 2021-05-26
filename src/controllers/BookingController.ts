@@ -35,7 +35,7 @@ export default class BookingController implements CRLUD {
 
   @Put("/")
   async create(
-    @Body() body: BookingDocument,
+    @Body() body: BookingDocument | BookingDocument[],
     @Response() res: ExpressResponse
   ): Promise<void> {
     jsonWithStatus(res, await this.crudService.create(body));

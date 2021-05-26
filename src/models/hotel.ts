@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { Document, Schema, Model, model } from "mongoose";
 import RoomModel, { RoomDocument } from "./Room";
-import autopopulate from "mongoose-autopopulate";
 
 const HotelSchema: Schema<HotelDocument, HotelBaseModel> = new Schema<
   HotelDocument,
@@ -34,12 +33,13 @@ const HotelSchema: Schema<HotelDocument, HotelBaseModel> = new Schema<
       type: Schema.Types.ObjectId,
       ref: "Room",
       required: false,
-      autopopulate: true,
+      validate: {
+        validator: (_id: number, _: any) => _id == null,
+        message: "Room cannot be added from hotel",
+      },
     },
   ],
 });
-
-HotelSchema.plugin(autopopulate);
 
 interface Hotel {
   name: string;
@@ -55,24 +55,8 @@ export interface HotelDocument extends Hotel, Document {
 
 export interface HotelBaseModel extends Model<HotelDocument> {}
 
-HotelSchema.pre("save", async function (next): Promise<void> {
-  if (this.rooms != null) {
-    console.warn("Room cannot be added from hotel");
-    return;
-  }
-
-  next();
+HotelSchema.post("remove", async function ({ _id: hotel }): Promise<void> {
+  await RoomModel.findOneAndDelete({ hotel });
 });
-
-HotelSchema.post(
-  "deleteMany",
-  async function (docs: RoomDocument[]): Promise<void> {
-    await RoomModel.deleteMany({
-      hotel: {
-        $in: docs.map((doc: RoomDocument) => doc._id),
-      },
-    });
-  }
-);
 
 export default model<HotelDocument, HotelBaseModel>("Hotel", HotelSchema);
