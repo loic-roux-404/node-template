@@ -11,8 +11,8 @@ import {
 } from "@decorators/express";
 import UserModel, { UserDocument } from "../models/User";
 import { Response as ExpressResponse } from "express";
-import { CRLUD } from "../types/Framework";
-import { CrudService } from "../modules/mongodb/services/CrudService";
+import { CRLUD } from "../modules/mongodb/types";
+import { CrudService } from "../modules/mongodb";
 import { jsonWithStatus } from "../modules/expressInternal";
 import { Injectable } from "@decorators/di";
 import { FilterQuery } from "mongoose";

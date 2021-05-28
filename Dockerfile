@@ -1,9 +1,11 @@
-FROM node:latest
+FROM node:14-buster
+
+ENV NODE_ENV=production
 
 WORKDIR /app
 
-RUN yarn
+RUN yarn && yarn etsc
 
 EXPOSE 8080
 
-CMD ["yarn", "prod"]
+CMD ["node", "dist/app.js"]

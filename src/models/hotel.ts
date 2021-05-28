@@ -55,8 +55,12 @@ export interface HotelDocument extends Hotel, Document {
 
 export interface HotelBaseModel extends Model<HotelDocument> {}
 
-HotelSchema.post("remove", async function ({ _id: hotel }): Promise<void> {
-  await RoomModel.findOneAndDelete({ hotel });
-});
+HotelSchema.post(
+  "remove",
+  async function ({ _id: hotel }, next: Function): Promise<void> {
+    await RoomModel.findOneAndDelete({ hotel });
+    return next();
+  }
+);
 
 export default model<HotelDocument, HotelBaseModel>("Hotel", HotelSchema);

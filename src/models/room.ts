@@ -45,14 +45,9 @@ export interface RoomBaseModel extends Model<RoomDocument> {}
 
 RoomSchema.pre(
   "insertMany",
-  async function (next: any, docs: RoomDocument[]): Promise<void> {
-    // TODO use pipelining or single query other way
-    for (const doc of docs) {
-      await HotelModel.updateOne(
-        { _id: doc.hotel },
-        { $push: { rooms: doc._id } }
-      );
-    }
+  async function (next: Function, docs: RoomDocument[]): Promise<void> {
+    console.log(docs);
+    return next();
   }
 );
 

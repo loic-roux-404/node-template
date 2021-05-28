@@ -30,7 +30,6 @@
     "esm": "^3.2.25",
     "express": "^4.17.1",
     "http-graceful-shutdown": "^3.0.2",
-    "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "mongoose": "^5.12.1",
@@ -38,11 +37,9 @@
     "oidc-provider": "^7.3.2",
     "openid-client": "^4.7.3",
     "passport": "^0.4.1",
-    "redis": "^3.1.2",
-    "sha256": "^0.2.0"
+    "redis": "^3.1.2"
   },
   "scripts": {
-    "prod": "etsc && NODE_ENV=production node dist/app.js",
     "dev": "eval $(egrep -v '^#' .env | xargs) nodemon dist/app.js",
     "lint": "eslint ."
   }

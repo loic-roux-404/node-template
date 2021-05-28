@@ -11,8 +11,8 @@ import {
   Body,
 } from "@decorators/express";
 import { Response as ExpressResponse } from "express";
-import { CRLUD } from "../types/Framework";
-import { CrudService } from "../modules/mongodb/services/CrudService";
+import { CRLUD } from "../modules/mongodb/types";
+import { CrudService } from "../modules/mongodb";
 import { Injectable } from "@decorators/di";
 import { jsonWithStatus } from "../modules/expressInternal";
 import { FilterQuery } from "mongoose";

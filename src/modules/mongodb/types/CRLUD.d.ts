@@ -5,7 +5,7 @@ import { Response as ExpressResponse } from "express";
 /**
  * Crud rules
  */
-export interface CRLUD {
+export default interface CRLUD {
   /**
    * @example @Put("/") read() {}
    */
