@@ -1,7 +1,7 @@
 import { ErrorMiddleware, ERROR_MIDDLEWARE } from "@decorators/express";
 import { Injectable } from "@decorators/di";
 import { NextFunction, Response } from "express";
-import { FailedRequest } from "../types/Server";
+import { FailedRequest } from "../modules/framework/types";
 import handleError from "../modules/handleError";
 
 @Injectable()

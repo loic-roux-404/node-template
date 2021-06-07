@@ -1,5 +1,5 @@
 import { Response } from "express";
-import { FailedRequest } from "../../types/Server";
+import { FailedRequest } from "../framework/types";
 import errorMap from "./errorMap";
 
 const getStatusFromError = (error: Error): number =>
